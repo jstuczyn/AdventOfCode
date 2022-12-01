@@ -21,6 +21,7 @@ pub struct Elf {
 }
 
 impl Elf {
+    #[cfg(test)]
     pub(crate) fn new(calorie_items: Vec<usize>) -> Self {
         Elf { calorie_items }
     }
