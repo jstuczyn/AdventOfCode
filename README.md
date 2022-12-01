@@ -4,7 +4,7 @@ Keeping track of solutions to various puzzles from https://adventofcode.com/
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge&logo=appveyo)](https://opensource.org/licenses/Apache-2.0)
 [![Build Status](https://img.shields.io/github/workflow/status/jstuczyn/AdventOfCode/Continuous%20integration?style=for-the-badge)](https://github.com/jstuczyn/AdventOfCode/actions?query=branch%3Amaster)
-[![Coverage](https://img.shields.io/codecov/c/github/jstuczyn/AdventOfCode?token=MB5EB16E2Y&style=for-the-badge&logo=codecov)](https://codecov.io/gh/jstuczyn/AdventOfCode)
+[![Coverage](https://img.shields.io/codecov/c/github/jstuczyn/AdventOfCode2021?token=MB5EB16E2Y&style=for-the-badge&logo=codecov?token=EEAVX8J62K)](https://codecov.io/gh/jstuczyn/AdventOfCode2021)
 
 ## About
 
