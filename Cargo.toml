@@ -2,5 +2,6 @@
 
 members = [
     "solution-runner",
+    "2022/day01",
     "common"
 ]
