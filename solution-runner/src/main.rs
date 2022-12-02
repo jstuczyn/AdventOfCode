@@ -42,8 +42,10 @@ fn main() {
     match args.year {
         y if y == 2022 => match args.day {
             d if d == 1 => {
-                println!("here i will be running code for day1 year 2022");
-                // day01_2022::solve("2022/day01/input");
+                day01_2022::solve("2022/day01/input");
+            }
+            d if d == 2 => {
+                day02_2022::solve("2022/day02/input");
             }
             d if d > 25 || d == 0 => {
                 println!("no puzzles exist for day {d}!")
