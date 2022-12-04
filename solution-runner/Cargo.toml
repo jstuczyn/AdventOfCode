@@ -10,3 +10,4 @@ clap = { version = "4.0.29", features = ["derive"] }
 
 day01_2022 = { path = "../2022/day01" }
 day02_2022 = { path = "../2022/day02" }
+day04_2022 = { path = "../2022/day04" }
