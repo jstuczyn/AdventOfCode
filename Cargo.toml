@@ -4,5 +4,6 @@ members = [
     "solution-runner",
     "2022/day01",
     "2022/day02",
+    "2022/day03",
     "common"
 ]

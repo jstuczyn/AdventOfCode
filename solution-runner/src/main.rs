@@ -47,6 +47,9 @@ fn main() {
             d if d == 2 => {
                 day02_2022::solve("2022/day02/input");
             }
+            d if d == 3 => {
+                day03_2022::solve("2022/day03/input");
+            }
             d if d > 25 || d == 0 => {
                 println!("no puzzles exist for day {d}!")
             }
