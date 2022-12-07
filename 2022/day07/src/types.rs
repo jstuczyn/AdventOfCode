@@ -14,7 +14,6 @@
 
 use anyhow::{anyhow, bail};
 use common::parsing::parse_input_lines;
-use std::collections::BTreeSet;
 use std::str::FromStr;
 
 const ROOT: &str = "/";
@@ -114,11 +113,12 @@ impl FileSystem {
         }
     }
 
-    pub fn sum_count_dirs_with_max_size(&self, max_size: usize) -> usize {
+    pub fn sum_dirs_with_max_size(&self, max_size: usize) -> usize {
+        let mut lookup = vec![None; self.arena.len()];
         let mut total_size = 0;
         for node in &self.arena {
             if node.is_directory() {
-                let size = self.node_size(node.idx);
+                let size = self.node_size(node.idx, &mut lookup);
                 if size <= max_size {
                     total_size += size
                 }
@@ -132,14 +132,15 @@ impl FileSystem {
         total_disk_space: usize,
         required_unused_space: usize,
     ) -> usize {
-        let occupied = self.node_size(0);
+        let mut lookup = vec![None; self.arena.len()];
+        let occupied = self.node_size(0, &mut lookup);
         let available = total_disk_space - occupied;
         let needed_extra = required_unused_space - available;
 
         let mut smallest = usize::MAX;
         for node in &self.arena {
             if node.is_directory() {
-                let size = self.node_size(node.idx);
+                let size = self.node_size(node.idx, &mut lookup);
                 if size >= needed_extra && size < smallest {
                     smallest = size
                 }
@@ -206,14 +207,19 @@ impl FileSystem {
         bail!("child {child_name} doesn't exist for parent {parent_idx}!")
     }
 
-    fn node_size(&self, node_idx: usize) -> usize {
+    fn node_size(&self, node_idx: usize, lookup: &mut [Option<usize>]) -> usize {
+        if let Some(known) = lookup[node_idx] {
+            return known;
+        }
         let node = &self.arena[node_idx];
-        node.entry.size()
+        let size = node.entry.size()
             + node
                 .children
                 .iter()
-                .map(|child| self.node_size(*child))
-                .sum::<usize>()
+                .map(|child| self.node_size(*child, lookup))
+                .sum::<usize>();
+        lookup[node_idx] = Some(size);
+        size
     }
 }
 
@@ -290,7 +296,7 @@ impl FileSystemEntry {
 
 #[derive(Debug, Clone)]
 pub struct File {
-    name: String,
+    _name: String,
     size: usize,
 }
 
@@ -310,7 +316,7 @@ impl FromStr for File {
             .ok_or_else(|| anyhow!("input did not contain the file name"))?
             .to_string();
 
-        Ok(File { name, size })
+        Ok(File { _name: name, size })
     }
 }
 

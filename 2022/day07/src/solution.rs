@@ -15,7 +15,7 @@
 use crate::types::FileSystem;
 
 pub fn part1(input: FileSystem) -> usize {
-    input.sum_count_dirs_with_max_size(100000)
+    input.sum_dirs_with_max_size(100000)
 }
 
 pub fn part2(input: FileSystem) -> usize {
