@@ -17,8 +17,8 @@ use common::execution::execute;
 use std::path::Path;
 use std::str::FromStr;
 
-mod solution;
-mod types;
+pub mod solution;
+pub mod types;
 
 pub fn solve<P: AsRef<Path>>(input_file: P) {
     execute(input_file, FromStr::from_str, part1, part2)
