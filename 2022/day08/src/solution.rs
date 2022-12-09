@@ -42,7 +42,7 @@ mod tests {
         let expected = 21;
         assert_eq!(expected, part1(sample_input()))
     }
-    
+
     #[test]
     fn part2_sample_input() {
         let expected = 8;
