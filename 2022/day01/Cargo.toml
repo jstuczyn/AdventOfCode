@@ -12,3 +12,10 @@ path = "src/lib.rs"
 [dependencies]
 common = { path =  "../../common" }
 anyhow = "1"
+
+[dev-dependencies]
+criterion = "0.4"
+
+[[bench]]
+name = "benchmarks"
+harness = false

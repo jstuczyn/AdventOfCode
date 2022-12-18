@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::solution::{part1, part2};
 use common::execution::execute;
 use common::parsing::parse_groups;
 use std::path::Path;
+
+pub use crate::solution::{part1, part2};
+pub use crate::types::Monkey;
 
 mod solution;
 mod types;

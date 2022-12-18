@@ -12,12 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::solution::{part1, part2};
 use common::execution::execute;
+use common::parsing::as_char_vec;
 use std::path::Path;
+
+pub use crate::solution::{part1, part2};
 
 mod solution;
 
 pub fn solve<P: AsRef<Path>>(input_file: P) {
-    execute(input_file, |raw| Ok(raw.chars().collect()), part1, part2)
+    execute(input_file, as_char_vec, part1, part2)
 }

@@ -12,16 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::execution::execute;
-use std::path::Path;
-use std::str::FromStr;
+use common::define_aoc_benchmark;
+use common::parsing::as_char_vec;
+use day06_2022::{part1, part2};
 
-pub use crate::solution::{part1, part2};
-pub use types::Supplies;
-
-mod solution;
-mod types;
-
-pub fn solve<P: AsRef<Path>>(input_file: P) {
-    execute(input_file, FromStr::from_str, part1, part2)
-}
+define_aoc_benchmark!("input", as_char_vec, Vec<char>);

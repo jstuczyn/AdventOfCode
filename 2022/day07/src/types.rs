@@ -223,6 +223,12 @@ impl FileSystem {
     }
 }
 
+impl Default for FileSystem {
+    fn default() -> Self {
+        FileSystem::new()
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct FileSystemNode {
     idx: usize,
