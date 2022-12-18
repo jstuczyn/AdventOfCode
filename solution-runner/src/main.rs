@@ -34,68 +34,26 @@ struct Args {
     // custom_input: Option<String>,
 }
 
+macro_rules! define_solution {
+    ($args: ident, $year: literal, $day: literal, $input: literal, $solver: expr) => {
+        if $args.year == $year && $args.day == $day {
+            return $solver($input);
+        }
+    };
+}
+
 fn main() {
     let args = Args::parse();
 
-    // TODO: this match is going to get incredibly nasty with more years
-    // some macro could help here.
-    match args.year {
-        y if y == 2022 => match args.day {
-            d if d == 1 => {
-                day01_2022::solve("2022/day01/input");
-            }
-            d if d == 2 => {
-                day02_2022::solve("2022/day02/input");
-            }
-            d if d == 3 => {
-                day03_2022::solve("2022/day03/input");
-            }
-            d if d == 4 => {
-                day04_2022::solve("2022/day04/input");
-            }
-            d if d == 5 => {
-                day05_2022::solve("2022/day05/input");
-            }
-            d if d == 6 => {
-                day06_2022::solve("2022/day06/input");
-            }
-            d if d == 7 => {
-                day07_2022::solve("2022/day07/input");
-            }
-            d if d == 8 => {
-                day08_2022::solve("2022/day08/input");
-            }
-            d if d == 11 => {
-                day11_2022::solve("2022/day11/input");
-            }
-            d if d > 25 || d == 0 => {
-                println!("no puzzles exist for day {d}!")
-            }
-            d => println!("no solutions found for {y} day {d} : ("),
-        },
-        y if y == 2021 => {
-            println!("no solutions found for {y} : (");
-        }
-        y if y == 2020 => {
-            println!("no solutions found for {y} : (");
-        }
-        y if y == 2019 => {
-            println!("no solutions found for {y} : (");
-        }
-        y if y == 2018 => {
-            println!("no solutions found for {y} : (");
-        }
-        y if y == 2017 => {
-            println!("no solutions found for {y} : (");
-        }
-        y if y == 2016 => {
-            println!("no solutions found for {y} : (");
-        }
-        y if y == 2015 => {
-            println!("no solutions found for {y} : (");
-        }
-        y => {
-            println!("Advent of code hasn't published any puzzles for {y}! (alternatively I haven't updated my code yet)")
-        }
-    }
+    define_solution!(args, 2022, 1, "2022/day01/input", day01_2022::solve);
+    define_solution!(args, 2022, 2, "2022/day02/input", day02_2022::solve);
+    define_solution!(args, 2022, 3, "2022/day03/input", day03_2022::solve);
+    define_solution!(args, 2022, 4, "2022/day04/input", day04_2022::solve);
+    define_solution!(args, 2022, 5, "2022/day05/input", day05_2022::solve);
+    define_solution!(args, 2022, 6, "2022/day06/input", day06_2022::solve);
+    define_solution!(args, 2022, 7, "2022/day07/input", day07_2022::solve);
+    define_solution!(args, 2022, 8, "2022/day08/input", day08_2022::solve);
+    define_solution!(args, 2022, 11, "2022/day11/input", day11_2022::solve);
+
+    println!("no solution found for year {}, day {}", args.year, args.day);
 }
