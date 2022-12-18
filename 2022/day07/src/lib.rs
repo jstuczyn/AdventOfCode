@@ -12,13 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::solution::{part1, part2};
 use common::execution::execute;
 use std::path::Path;
 use std::str::FromStr;
 
-pub mod solution;
-pub mod types;
+pub use crate::solution::{part1, part2};
+pub use types::FileSystem;
+
+mod solution;
+mod types;
 
 pub fn solve<P: AsRef<Path>>(input_file: P) {
     execute(input_file, FromStr::from_str, part1, part2)

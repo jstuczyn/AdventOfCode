@@ -130,3 +130,8 @@ where
             ))
         })
 }
+
+/// Transforms the raw string input into a Vec<char>
+pub fn as_char_vec(raw: &str) -> Result<Vec<char>> {
+    Ok(raw.chars().collect())
+}
