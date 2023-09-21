@@ -1,4 +1,4 @@
-// Copyright 2022 Jedrzej Stuczynski
+// Copyright 2022-2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,16 +12,74 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::execution::execute;
+#![warn(clippy::unwrap_used)]
+#![warn(clippy::expect_used)]
+
+use crate::types::Rucksack;
 use common::parsing::parse_input_lines;
-use std::path::Path;
+use common::AocSolution;
 
-pub use crate::solution::{part1, part2};
-pub use types::Rucksack;
-
-mod solution;
 mod types;
 
-pub fn solve<P: AsRef<Path>>(input_file: P) {
-    execute(input_file, parse_input_lines, part1, part2)
+pub struct Day03;
+
+impl AocSolution for Day03 {
+    type Input = Vec<Rucksack>;
+    type Part1Output = usize;
+    type Part2Output = usize;
+
+    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
+        parse_input_lines(raw.as_ref())
+    }
+
+    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
+        Ok(part1(input))
+    }
+
+    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
+        Ok(part2(input))
+    }
+}
+
+pub fn part1(input: Vec<Rucksack>) -> usize {
+    input
+        .into_iter()
+        .map(|rucksack| rucksack.duplicate_item().priority())
+        .sum()
+}
+
+pub fn part2(input: Vec<Rucksack>) -> usize {
+    input
+        .chunks(3)
+        .map(|group| group[0].badge(&group[1], &group[2]).priority())
+        .sum()
+}
+
+#[cfg(test)]
+#[allow(clippy::unwrap_used)]
+mod tests {
+    use super::*;
+
+    fn sample_input() -> Vec<Rucksack> {
+        vec![
+            "vJrwpWtwJgWrhcsFMMfFFhFp".parse().unwrap(),
+            "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL".parse().unwrap(),
+            "PmmdzqPrVvPwwTWBwg".parse().unwrap(),
+            "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn".parse().unwrap(),
+            "ttgJtRGJQctTZtZT".parse().unwrap(),
+            "CrZsJsPPZsGzwwsLwLmpwMDw".parse().unwrap(),
+        ]
+    }
+
+    #[test]
+    fn part1_sample_input() {
+        let expected = 157;
+        assert_eq!(expected, part1(sample_input()))
+    }
+
+    #[test]
+    fn part2_sample_input() {
+        let expected = 70;
+        assert_eq!(expected, part2(sample_input()))
+    }
 }

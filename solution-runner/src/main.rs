@@ -13,6 +13,7 @@
 // limitations under the License.
 
 use clap::Parser;
+use common::AocSolutionSolver;
 
 /// Simple solution runner for Advent of Code puzzles.
 #[derive(Parser, Debug)]
@@ -35,9 +36,9 @@ struct Args {
 }
 
 macro_rules! define_solution {
-    ($args: ident, $year: literal, $day: literal, $input: literal, $solver: expr) => {
+    ($args: ident, $year: literal, $day: literal, $input: literal, $solver: ty) => {
         if $args.year == $year && $args.day == $day {
-            return $solver($input);
+            return <$solver as AocSolutionSolver>::try_solve_from_file($input);
         }
     };
 }
@@ -45,15 +46,15 @@ macro_rules! define_solution {
 fn main() {
     let args = Args::parse();
 
-    define_solution!(args, 2022, 1, "2022/day01/input", day01_2022::solve);
-    define_solution!(args, 2022, 2, "2022/day02/input", day02_2022::solve);
-    define_solution!(args, 2022, 3, "2022/day03/input", day03_2022::solve);
-    define_solution!(args, 2022, 4, "2022/day04/input", day04_2022::solve);
-    define_solution!(args, 2022, 5, "2022/day05/input", day05_2022::solve);
-    define_solution!(args, 2022, 6, "2022/day06/input", day06_2022::solve);
-    define_solution!(args, 2022, 7, "2022/day07/input", day07_2022::solve);
-    define_solution!(args, 2022, 8, "2022/day08/input", day08_2022::solve);
-    define_solution!(args, 2022, 11, "2022/day11/input", day11_2022::solve);
+    define_solution!(args, 2022, 1, "2022/day01/input", day01_2022::Day01);
+    define_solution!(args, 2022, 2, "2022/day02/input", day02_2022::Day02);
+    define_solution!(args, 2022, 3, "2022/day03/input", day03_2022::Day03);
+    define_solution!(args, 2022, 4, "2022/day04/input", day04_2022::Day04);
+    define_solution!(args, 2022, 5, "2022/day05/input", day05_2022::Day05);
+    define_solution!(args, 2022, 6, "2022/day06/input", day06_2022::Day06);
+    define_solution!(args, 2022, 7, "2022/day07/input", day07_2022::Day07);
+    define_solution!(args, 2022, 8, "2022/day08/input", day08_2022::Day08);
+    define_solution!(args, 2022, 11, "2022/day11/input", day11_2022::Day11);
 
     println!("no solution found for year {}, day {}", args.year, args.day);
 }

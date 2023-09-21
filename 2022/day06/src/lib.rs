@@ -1,4 +1,4 @@
-// Copyright 2022 Jedrzej Stuczynski
+// Copyright 2022-2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,86 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::execution::execute;
+#![warn(clippy::unwrap_used)]
+#![warn(clippy::expect_used)]
+
 use common::parsing::as_char_vec;
-use std::path::Path;
+use common::AocSolution;
 
-pub use crate::solution::{part1, part2};
+pub struct Day06;
 
-mod solution;
+impl AocSolution for Day06 {
+    type Input = Vec<char>;
+    type Part1Output = usize;
+    type Part2Output = usize;
 
-pub fn solve<P: AsRef<Path>>(input_file: P) {
-    execute(input_file, as_char_vec, part1, part2)
+    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
+        as_char_vec(raw.as_ref())
+    }
+
+    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
+        Ok(part1(input))
+    }
+
+    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
+        Ok(part2(input))
+    }
+}
+
+// since our window size is 4 and 14 for part1 and part2 respectively,
+// it's more efficient to do full slice lookup as opposed to paying for the instantiation cost of a HashSet
+fn solve(input: Vec<char>, window_size: usize) -> usize {
+    input
+        .windows(window_size)
+        .enumerate()
+        .find(|(_, slice)| !(1..slice.len()).any(|i| slice[i..].contains(&slice[i - 1])))
+        .unwrap_or_else(|| panic!("no solution exists for windows size {window_size}"))
+        .0
+        + window_size
+}
+
+pub fn part1(input: Vec<char>) -> usize {
+    solve(input, 4)
+}
+
+pub fn part2(input: Vec<char>) -> usize {
+    solve(input, 14)
+}
+
+#[cfg(test)]
+#[allow(clippy::unwrap_used)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn part1_sample_input() {
+        assert_eq!(5, part1("bvwbjplbgvbhsrlpgdmjqwftvncz".chars().collect()));
+        assert_eq!(6, part1("nppdvjthqldpwncqszvftbrmjlhg".chars().collect()));
+        assert_eq!(
+            10,
+            part1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg".chars().collect())
+        );
+        assert_eq!(
+            11,
+            part1("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw".chars().collect())
+        );
+    }
+
+    #[test]
+    fn part2_sample_input() {
+        assert_eq!(
+            19,
+            part2("mjqjpqmgbljsphdztnvjfqwrcgsmlb".chars().collect())
+        );
+        assert_eq!(23, part2("bvwbjplbgvbhsrlpgdmjqwftvncz".chars().collect()));
+        assert_eq!(23, part2("nppdvjthqldpwncqszvftbrmjlhg".chars().collect()));
+        assert_eq!(
+            29,
+            part2("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg".chars().collect())
+        );
+        assert_eq!(
+            26,
+            part2("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw".chars().collect())
+        );
+    }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Jedrzej Stuczynski
+// Copyright 2022-2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,7 +53,6 @@ where
     <T as FromStr>::Err: Debug,
 {
     raw.lines()
-        .into_iter()
         .map(|line| line.parse::<T>())
         .collect::<std::result::Result<Vec<T>, _>>()
         .map_err(|err| {
