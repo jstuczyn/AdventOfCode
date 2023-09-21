@@ -27,9 +27,9 @@ impl FromStr for RoundResult {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            s if s == "X" => Ok(RoundResult::Loss),
-            s if s == "Y" => Ok(RoundResult::Draw),
-            s if s == "Z" => Ok(RoundResult::Win),
+            "X" => Ok(RoundResult::Loss),
+            "Y" => Ok(RoundResult::Draw),
+            "Z" => Ok(RoundResult::Win),
             s => bail!("{s} is not a valid round result"),
         }
     }
