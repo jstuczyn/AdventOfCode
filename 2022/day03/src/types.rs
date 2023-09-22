@@ -1,4 +1,4 @@
-// Copyright 2022 Jedrzej Stuczynski
+// Copyright 2022-2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -72,7 +72,6 @@ impl FromStr for Rucksack {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let items = s
             .chars()
-            .into_iter()
             .map(Item::try_from)
             .collect::<Result<Vec<_>, _>>()?;
         if items.len() % 2 != 0 {

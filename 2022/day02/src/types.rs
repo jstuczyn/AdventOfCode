@@ -1,4 +1,4 @@
-// Copyright 2022 Jedrzej Stuczynski
+// Copyright 2022-2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ impl FromStr for RoundResult {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            s if s == "X" => Ok(RoundResult::Loss),
-            s if s == "Y" => Ok(RoundResult::Draw),
-            s if s == "Z" => Ok(RoundResult::Win),
-            s => Err(anyhow!("{s} is not a valid round result")),
+            "X" => Ok(RoundResult::Loss),
+            "Y" => Ok(RoundResult::Draw),
+            "Z" => Ok(RoundResult::Win),
+            s => bail!("{s} is not a valid round result"),
         }
     }
 }

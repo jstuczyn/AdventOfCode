@@ -1,4 +1,4 @@
-// Copyright 2022 Jedrzej Stuczynski
+// Copyright 2022-2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::solution::{part1, part2};
-use common::execution::execute;
-use common::parsing::parse_groups;
-
-mod solution;
-mod types;
+use common::AocSolutionSolver;
+use day11_2022::Day11;
 
 #[cfg(not(tarpaulin))]
 fn main() {
-    execute("input", parse_groups, part1, part2)
+    Day11::try_solve_from_file("input")
 }

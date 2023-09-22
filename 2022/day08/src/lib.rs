@@ -1,4 +1,4 @@
-// Copyright 2022 Jedrzej Stuczynski
+// Copyright 2022-2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,16 +12,74 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![warn(clippy::unwrap_used)]
+#![warn(clippy::expect_used)]
+
+use crate::types::Forest;
 use common::execution::execute;
+use common::AocSolution;
 use std::path::Path;
 use std::str::FromStr;
 
-pub use crate::solution::{part1, part2};
-pub use crate::types::Forest;
-
-mod solution;
 mod types;
+
+pub struct Day08;
+
+impl AocSolution for Day08 {
+    type Input = Forest;
+    type Part1Output = usize;
+    type Part2Output = usize;
+
+    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
+        raw.as_ref().parse()
+    }
+
+    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
+        Ok(part1(input))
+    }
+
+    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
+        Ok(part2(input))
+    }
+}
 
 pub fn solve<P: AsRef<Path>>(input_file: P) {
     execute(input_file, FromStr::from_str, part1, part2)
+}
+
+pub fn part1(input: Forest) -> usize {
+    input.count_visible_trees()
+}
+
+pub fn part2(input: Forest) -> usize {
+    input.highest_scenic_score()
+}
+
+#[cfg(test)]
+#[allow(clippy::unwrap_used)]
+mod tests {
+    use super::*;
+    use crate::types::Forest;
+
+    fn sample_input() -> Forest {
+        r#"30373
+25512
+65332
+33549
+35390"#
+            .parse()
+            .unwrap()
+    }
+
+    #[test]
+    fn part1_sample_input() {
+        let expected = 21;
+        assert_eq!(expected, part1(sample_input()))
+    }
+
+    #[test]
+    fn part2_sample_input() {
+        let expected = 8;
+        assert_eq!(expected, part2(sample_input()))
+    }
 }

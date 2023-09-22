@@ -1,6 +1,9 @@
 [workspace]
+resolver = "2"
 
 members = [
+    "aoc-solution",
+    "aoc-solution-derive",
     "solution-runner",
     "2022/day01",
     "2022/day02",
@@ -13,3 +16,6 @@ members = [
     "2022/day11",
     "common"
 ]
+
+[workspace.dependencies]
+anyhow = "1.0.75"

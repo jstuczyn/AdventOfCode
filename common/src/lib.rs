@@ -1,4 +1,4 @@
-// Copyright 2022 Jedrzej Stuczynski
+// Copyright 2022-2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,3 +16,5 @@ pub mod benchmark;
 pub mod execution;
 pub mod input_read;
 pub mod parsing;
+
+pub use aoc_solution::{AocSolution, AocSolutionSolver};
