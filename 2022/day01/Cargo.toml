@@ -11,6 +11,7 @@ path = "src/lib.rs"
 
 [dependencies]
 common = { path =  "../../common" }
+aoc-solution = { path = "../../aoc-solution" }
 anyhow = { workspace = true }
 
 [dev-dependencies]

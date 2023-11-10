@@ -14,8 +14,42 @@
 
 use anyhow::{Error, Result};
 use std::fmt::Debug;
+use std::marker::PhantomData;
 use std::ops::RangeInclusive;
 use std::str::FromStr;
+
+// we need separate trait, i.e. we can't just use `FromStr`,
+// because of all the custom rules for say `Vec<T>`
+// TODO: or maybe we should just create wrapper containers instead?
+pub trait AocInputParser {
+    type Output;
+
+    fn parse_input(raw: &str) -> Result<Self::Output>;
+}
+
+pub trait AocParseExt {
+    fn parse_aoc_input<F: AocInputParser>(&self) -> Result<F::Output>;
+}
+
+impl AocParseExt for str {
+    fn parse_aoc_input<F: AocInputParser>(&self) -> Result<F::Output> {
+        <F as AocInputParser>::parse_input(self)
+    }
+}
+
+pub struct GroupsParser<T>(*const PhantomData<T>);
+
+impl<T> AocInputParser for GroupsParser<T>
+where
+    T: FromStr,
+    <T as FromStr>::Err: Debug,
+{
+    type Output = Vec<T>;
+
+    fn parse_input(raw: &str) -> Result<Self::Output> {
+        parse_groups(raw)
+    }
+}
 
 /// Parse input in the form of x=<a>..<b> to `RangeInclusive<isize>`
 pub fn parse_raw_range(raw: &str) -> Result<RangeInclusive<isize>> {

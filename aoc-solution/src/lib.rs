@@ -12,33 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use anyhow::bail;
 use std::any::type_name;
 use std::fmt::{Display, Formatter};
 use std::path::Path;
 use std::time::{Duration, Instant};
 
+extern crate aoc_derive;
+
+pub use aoc_derive::Aoc;
+
 pub trait AocSolution {
     type Input: Clone;
+    type Error: Display;
     type Part1Output: Display;
     type Part2Output: Display;
 
-    fn parse_input<M: AsRef<str>>(_raw: M) -> Result<Self::Input, anyhow::Error> {
-        bail!("unimplemented")
-    }
-
-    fn part1(_input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        bail!("unimplemented")
-    }
-
-    fn part2(_input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        bail!("unimplemented")
-    }
+    fn parse_input(_raw: &str) -> Result<Self::Input, Self::Error>;
+    fn part1(_input: Self::Input) -> Result<Self::Part1Output, Self::Error>;
+    fn part2(_input: Self::Input) -> Result<Self::Part2Output, Self::Error>;
 }
 
 pub trait AocSolutionSolver: AocSolution {
-    fn try_solve<M: AsRef<str>>(raw_input: M) {
-        match run::<Self, _>(raw_input) {
+    fn try_solve(raw_input: &str) {
+        match run::<Self>(raw_input) {
             Ok(result) => println!("{result}"),
             Err(err) => eprintln!("failed to solve aoc for '{}': {err}", type_name::<Self>()),
         }
@@ -103,18 +99,18 @@ fn timed<T, U, F: FnOnce(T) -> U>(f: F, input: T) -> TimedResult<U> {
     }
 }
 
-pub fn run_from_file<T, P>(path: P) -> Result<DayResult<T>, anyhow::Error>
+pub fn run_from_file<T, P>(path: P) -> Result<DayResult<T>, T::Error>
 where
     P: AsRef<Path>,
     T: AocSolution + ?Sized,
 {
-    run(std::fs::read_to_string(path)?)
+    let read_input = std::fs::read_to_string(path).expect("failed to read the file input");
+    run(&read_input)
 }
 
-pub fn run<T, M>(input: M) -> Result<DayResult<T>, anyhow::Error>
+pub fn run<T>(input: &str) -> Result<DayResult<T>, T::Error>
 where
     T: AocSolution + ?Sized,
-    M: AsRef<str>,
 {
     let parsed_input = timed(T::parse_input, input).transpose()?;
 
