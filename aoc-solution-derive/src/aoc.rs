@@ -13,10 +13,19 @@
 // limitations under the License.
 
 use crate::ResultExt;
-use proc_macro2::{Ident, TokenStream};
+use proc_macro2::{Ident, Span, TokenStream};
 use quote::{quote, ToTokens};
-use syn::parse::Parse;
-use syn::{Attribute, Error, Token};
+use syn::parse::{Parse, ParseStream};
+use syn::{parenthesized, Attribute, Error, Token};
+
+fn unimplemented_inner(custom_err: bool, name: &str) -> TokenStream {
+    // we're going to default to anyhow
+    if !custom_err {
+        quote! { anyhow::bail!("{0} hasn't been implemented", #name) }
+    } else {
+        quote! { panic!("{0} hasn't been implemented", #name) }
+    }
+}
 
 pub struct AocContainer {
     attributes: AocAttr,
@@ -30,94 +39,114 @@ impl AocContainer {
 }
 
 impl AocContainer {
-    fn unimplemented_inner(&self, name: &str) -> TokenStream {
-        // we're going to default to anyhow
+    fn wrap_runner(&self, runner: &Ident) -> TokenStream {
         if self.attributes.error_ty.is_none() {
-            quote! {
-                let name = #name
-                bail!("{name} hasn't been implemented")
-            }
+            quote! { Ok(#runner(input)) }
         } else {
-            quote! {
-                let name = #name
-                panic!("{name} hasn't been implemented")
+            quote! { #runner(input) }
+        }
+    }
+
+    fn part1_impl(&self) -> TokenStream {
+        if let Some(p1) = &self.attributes.part1 {
+            if let Some(runner) = &p1.runner {
+                return self.wrap_runner(runner);
             }
         }
+
+        self.unimplemented_inner("part1")
+    }
+
+    fn part1_output(&self) -> TokenStream {
+        if let Some(p1) = &self.attributes.part1 {
+            if let Some(ty) = &p1.output_ty {
+                return quote! { #ty };
+            }
+        }
+
+        quote! { String }
+    }
+
+    fn part2_impl(&self) -> TokenStream {
+        if let Some(p2) = &self.attributes.part2 {
+            if let Some(runner) = &p2.runner {
+                return self.wrap_runner(runner);
+            }
+        }
+
+        self.unimplemented_inner("part2")
+    }
+
+    fn part2_output(&self) -> TokenStream {
+        if let Some(p2) = &self.attributes.part2 {
+            if let Some(ty) = &p2.output_ty {
+                return quote! { #ty };
+            }
+        }
+
+        quote! { String }
+    }
+
+    fn input_ty(&self) -> TokenStream {
+        if let Some(input_type) = &self.attributes.input_type {
+            input_type.to_token_stream()
+        } else {
+            quote! {()}
+        }
+    }
+
+    // TODO: that technically requires anyhow import, but for the time being that's fine
+    fn error_ty(&self) -> TokenStream {
+        if let Some(error_ty) = &self.attributes.error_ty {
+            error_ty.to_token_stream()
+        } else {
+            quote! { anyhow::Error }
+        }
+    }
+
+    // TODO: we need to ensure import of `AocInputParser`
+    fn parser_impl(&self) -> TokenStream {
+        if let Some(parser) = &self.attributes.parser {
+            quote! { #parser::parse_input(raw) }
+        } else {
+            self.unimplemented_inner("input parser")
+        }
+    }
+
+    fn unimplemented_inner(&self, name: &str) -> TokenStream {
+        unimplemented_inner(self.attributes.error_ty.is_some(), name)
     }
 }
 
 impl ToTokens for AocContainer {
-    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
-        let AocContainer { attributes, ident } = self;
-        let input_ty = if let Some(input_type) = &attributes.input_type {
-            input_type.to_token_stream()
-        } else {
-            quote! {()}
-        };
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let ident = &self.ident;
 
-        let part1_ty = if let Some(part1_ty) = &attributes.part1_ty {
-            part1_ty.to_token_stream()
-        } else {
-            quote! { String }
-        };
-
-        let part2_ty = if let Some(part2_ty) = &attributes.part2_ty {
-            part2_ty.to_token_stream()
-        } else {
-            quote! { String }
-        };
-
-        // TODO: that technically requires anyhow import, but for the time being that's fine
-        let error_ty = if let Some(error_ty) = &attributes.error_ty {
-            error_ty.to_token_stream()
-        } else {
-            quote! { anyhow::Error }
-        };
-
-        // TODO: we need to ensure import of `AocInputParser`
-        let parser_impl_inner = if let Some(parser) = &attributes.parser {
-            quote! { #parser::parse_input(raw) }
-        } else {
-            self.unimplemented_inner("input parser")
-        };
-
-        let part1_impl_inner = if let Some(part1) = &attributes.part1 {
-            if attributes.error_ty.is_none() {
-                quote! { Ok(#part1(input)) }
-            } else {
-                quote! { #part1(input) }
-            }
-        } else {
-            self.unimplemented_inner("part1")
-        };
-
-        let part2_impl_inner = if let Some(part2) = &attributes.part2 {
-            if attributes.error_ty.is_none() {
-                quote! { Ok(#part2(input)) }
-            } else {
-                quote! { #part2(input) }
-            }
-        } else {
-            self.unimplemented_inner("part2")
-        };
+        let input_ty = self.input_ty();
+        let error_ty = self.error_ty();
+        let parser_impl = self.parser_impl();
+        let p1_ty = self.part1_output();
+        let p2_ty = self.part2_output();
+        let p1_impl = self.part1_impl();
+        let p2_impl = self.part2_impl();
 
         tokens.extend(quote! {
             impl aoc_solution::AocSolution for #ident {
                 type Input = #input_ty;
                 type Error = #error_ty;
-                type Part1Output = #part1_ty;
-                type Part2Output = #part2_ty;
+                type Part1Output = #p1_ty;
+                type Part2Output = #p2_ty;
 
                 fn parse_input(raw: &str) -> Result<Self::Input, Self::Error> {
-                    #parser_impl_inner
+                    #parser_impl
                 }
 
                 fn part1(input: Self::Input) -> Result<Self::Part1Output, Self::Error> {
-                    #part1_impl_inner
+                    #p1_impl
                 }
 
                 fn part2(input: Self::Input) -> Result<Self::Part2Output, Self::Error> {
-                    #part2_impl_inner
+                    #p2_impl
                 }
             }
         })
@@ -149,24 +178,13 @@ impl Parse for AocAttr {
                     aocttr.parser = Some(ident);
                 }
                 "part1" => {
-                    input.parse::<Token![=]>()?;
-                    let ident: syn::Ident = input.parse()?;
+                    let ident: AocPart = input.parse()?;
                     aocttr.part1 = Some(ident);
                 }
                 "part2" => {
                     input.parse::<Token![=]>()?;
-                    let ident: syn::Ident = input.parse()?;
+                    let ident: AocPart = input.parse()?;
                     aocttr.part2 = Some(ident);
-                }
-                "part1_output" => {
-                    input.parse::<Token![=]>()?;
-                    let ident: syn::Type = input.parse()?;
-                    aocttr.part1_ty = Some(ident);
-                }
-                "part2_output" => {
-                    input.parse::<Token![=]>()?;
-                    let ident: syn::Type = input.parse()?;
-                    aocttr.part2_ty = Some(ident);
                 }
                 "error" => {
                     input.parse::<Token![=]>()?;
@@ -192,19 +210,62 @@ pub struct AocAttr {
     // TODO: more concrete types?
     input_type: Option<syn::Type>,
     parser: Option<syn::Ident>,
-
-    part1_ty: Option<syn::Type>,
-    part2_ty: Option<syn::Type>,
     error_ty: Option<syn::Type>,
 
-    part1: Option<syn::Ident>,
-    part2: Option<syn::Ident>,
+    part1: Option<AocPart>,
+    part2: Option<AocPart>,
 }
 
-// struct AocPart {
-//     output_ty: syn::Type,
-//     exec: syn::Ident
-// }
+#[derive(Debug, Clone, Default)]
+struct AocPart {
+    output_ty: Option<syn::Type>,
+    runner: Option<syn::Ident>,
+}
+
+impl Parse for AocPart {
+    fn parse(input: ParseStream) -> syn::Result<Self> {
+        let content;
+        parenthesized!(content in input);
+        const EXPECTED_ATTRIBUTE: &str = "unexpected attribute. expected one of: output, runner";
+
+        let mut aoc_part = AocPart::default();
+
+        while !content.is_empty() {
+            let ident = content.parse::<Ident>().map_err(|error| {
+                Error::new(error.span(), format!("{EXPECTED_ATTRIBUTE}, {error}"))
+            })?;
+            let attribute = &*ident.to_string();
+
+            // every single attribute is in the form of `name = value`,
+            // thus we should be able to parse out the Eq token
+            content.parse::<Token![=]>()?;
+
+            match attribute {
+                "output" => {
+                    let output_ty2: syn::Type = content.parse()?;
+                    aoc_part.output_ty = Some(output_ty2);
+                }
+                "runner" => {
+                    let runner2: Ident = content.parse()?;
+                    aoc_part.runner = Some(runner2);
+                }
+                _ => return Err(syn::Error::new(ident.span(), EXPECTED_ATTRIBUTE)),
+            }
+            if !content.is_empty() {
+                content.parse::<Token![,]>()?;
+            }
+        }
+
+        if aoc_part.runner.is_some() && aoc_part.output_ty.is_none() {
+            return Err(Error::new(
+                Span::call_site(),
+                "could not use part runner without specifying return type",
+            ));
+        }
+
+        Ok(aoc_part)
+    }
+}
 
 impl AocAttr {
     fn merge(mut self, other: AocAttr) -> Self {
@@ -219,12 +280,6 @@ impl AocAttr {
         }
         if other.part2.is_some() {
             self.part2 = other.part2
-        }
-        if other.part1_ty.is_some() {
-            self.part1_ty = other.part1_ty
-        }
-        if other.part2_ty.is_some() {
-            self.part2_ty = other.part2_ty
         }
         if other.error_ty.is_some() {
             self.error_ty = other.error_ty
