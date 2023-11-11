@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 anyhow = { workspace = true }
 aoc-derive = { path = "../aoc-solution-derive" }
+humantime = "2.1.0"

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use humantime::format_duration;
 use std::any::type_name;
 use std::fmt::{Display, Formatter};
 use std::path::Path;
@@ -64,9 +65,9 @@ pub struct DayResult<T: AocSolution + ?Sized> {
 impl<T: AocSolution + ?Sized> Display for DayResult<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "# TIMING #")?;
-        writeln!(f, "PARSING:\t{:?}", self.parsing)?;
-        writeln!(f, "PART 1:\t\t{:?}", self.part1.taken)?;
-        writeln!(f, "PART 2:\t\t{:?}", self.part2.taken)?;
+        writeln!(f, "PARSING:\t{}", format_duration(self.parsing))?;
+        writeln!(f, "PART 1:\t\t{}", format_duration(self.part1.taken))?;
+        writeln!(f, "PART 2:\t\t{}", format_duration(self.part2.taken))?;
         writeln!(f)?;
         writeln!(f, "# RESULTS #")?;
         let display_p1 = match &self.part1.value {
