@@ -57,8 +57,8 @@ impl<T> AocSolutionSolver for T where T: AocSolution {}
 
 pub struct DayResult<T: AocSolution + ?Sized> {
     parsing: Duration,
-    part1: TimedResult<T::Part1Output>,
-    part2: TimedResult<T::Part2Output>,
+    part1: TimedResult<Result<T::Part1Output, T::Error>>,
+    part2: TimedResult<Result<T::Part2Output, T::Error>>,
 }
 
 impl<T: AocSolution + ?Sized> Display for DayResult<T> {
@@ -69,8 +69,18 @@ impl<T: AocSolution + ?Sized> Display for DayResult<T> {
         writeln!(f, "PART 2:\t\t{:?}", self.part2.taken)?;
         writeln!(f)?;
         writeln!(f, "# RESULTS #")?;
-        writeln!(f, "PART 1:\t\t{}", self.part1.value)?;
-        writeln!(f, "PART 2:\t\t{}", self.part2.value)
+        let display_p1 = match &self.part1.value {
+            Ok(res) => res.to_string(),
+            Err(err) => format!("failed to solve: {err}"),
+        };
+
+        let display_p2 = match &self.part2.value {
+            Ok(res) => res.to_string(),
+            Err(err) => format!("failed to solve: {err}"),
+        };
+
+        writeln!(f, "PART 1:\t\t{display_p1}")?;
+        writeln!(f, "PART 2:\t\t{display_p2}")
     }
 }
 
@@ -116,8 +126,8 @@ where
 {
     let parsed_input = timed(T::parse_input, input).transpose()?;
 
-    let part1 = timed(T::part1, parsed_input.value.clone()).transpose()?;
-    let part2 = timed(T::part2, parsed_input.value).transpose()?;
+    let part1 = timed(T::part1, parsed_input.value.clone());
+    let part2 = timed(T::part2, parsed_input.value);
 
     Ok(DayResult {
         parsing: parsed_input.taken,

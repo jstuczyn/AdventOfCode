@@ -25,7 +25,7 @@ mod types;
 #[aoc(input = Vec<Elf>)]
 #[aoc(parser = GroupsParser)]
 #[aoc(part1(output = usize, runner = part1))]
-#[aoc(part2(output = usize, runner = part2))]
+// #[aoc(part2(output = usize, runner = part2))]
 pub struct Day01;
 
 pub fn part1(input: Vec<Elf>) -> usize {
@@ -59,30 +59,30 @@ pub fn part2(input: Vec<Elf>) -> usize {
     max + max2 + max3
 }
 
-// #[cfg(test)]
-// #[allow(clippy::unwrap_used)]
-// mod tests {
-//     use super::*;
-//
-//     fn sample_input() -> Vec<Elf> {
-//         vec![
-//             Elf::new(vec![1000, 2000, 3000]),
-//             Elf::new(vec![4000]),
-//             Elf::new(vec![5000, 6000]),
-//             Elf::new(vec![7000, 8000, 9000]),
-//             Elf::new(vec![10000]),
-//         ]
-//     }
-//
-//     #[test]
-//     fn part1_sample_input() {
-//         let expected = 24000;
-//         assert_eq!(expected, part1(sample_input()))
-//     }
-//
-//     #[test]
-//     fn part2_sample_input() {
-//         let expected = 45000;
-//         assert_eq!(expected, part2(sample_input()))
-//     }
-// }
+#[cfg(test)]
+#[allow(clippy::unwrap_used)]
+mod tests {
+    use super::*;
+
+    fn sample_input() -> Vec<Elf> {
+        vec![
+            Elf::new(vec![1000, 2000, 3000]),
+            Elf::new(vec![4000]),
+            Elf::new(vec![5000, 6000]),
+            Elf::new(vec![7000, 8000, 9000]),
+            Elf::new(vec![10000]),
+        ]
+    }
+
+    #[test]
+    fn part1_sample_input() {
+        let expected = 24000;
+        assert_eq!(expected, part1(sample_input()))
+    }
+
+    #[test]
+    fn part2_sample_input() {
+        let expected = 45000;
+        assert_eq!(expected, part2(sample_input()))
+    }
+}
