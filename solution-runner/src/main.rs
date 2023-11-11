@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use aoc_solution::AocSolutionSolver;
 use clap::Parser;
-use common::AocSolutionSolver;
 
 /// Simple solution runner for Advent of Code puzzles.
 #[derive(Parser, Debug)]

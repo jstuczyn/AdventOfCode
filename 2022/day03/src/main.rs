@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::AocSolutionSolver;
+use aoc_solution::AocSolutionSolver;
 use day03_2022::Day03;
 
 #[cfg(not(tarpaulin))]

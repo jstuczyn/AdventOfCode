@@ -16,8 +16,8 @@
 #![warn(clippy::expect_used)]
 
 use crate::types::Elf;
+use aoc_solution::Aoc;
 use common::parsing::GroupsParser;
-use common::Aoc;
 
 mod types;
 
@@ -25,7 +25,7 @@ mod types;
 #[aoc(input = Vec<Elf>)]
 #[aoc(parser = GroupsParser)]
 #[aoc(part1(output = usize, runner = part1))]
-// #[aoc(part2(output = usize, runner = part2))]
+#[aoc(part2(output = usize, runner = part2))]
 pub struct Day01;
 
 pub fn part1(input: Vec<Elf>) -> usize {

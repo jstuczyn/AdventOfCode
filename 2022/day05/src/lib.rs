@@ -16,29 +16,17 @@
 #![warn(clippy::expect_used)]
 
 use crate::types::Supplies;
-use common::AocSolution;
+use aoc_solution::Aoc;
+use common::parsing::FromStrParser;
 
 mod types;
 
+#[derive(Aoc)]
+#[aoc(input = Supplies)]
+#[aoc(parser = FromStrParser)]
+#[aoc(part1(output = String, runner = part1))]
+#[aoc(part2(output = String, runner = part2))]
 pub struct Day05;
-
-impl AocSolution for Day05 {
-    type Input = Supplies;
-    type Part1Output = String;
-    type Part2Output = String;
-
-    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
-        raw.as_ref().parse()
-    }
-
-    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        Ok(part1(input))
-    }
-
-    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        Ok(part2(input))
-    }
-}
 
 pub fn part1(mut input: Supplies) -> String {
     input.complete_rearrangement_procedure(false);

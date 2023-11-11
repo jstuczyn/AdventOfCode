@@ -16,30 +16,17 @@
 #![warn(clippy::expect_used)]
 
 use crate::types::Rucksack;
-use common::parsing::parse_input_lines;
-use common::AocSolution;
+use aoc_solution::Aoc;
+use common::parsing::LineParser;
 
 mod types;
 
+#[derive(Aoc)]
+#[aoc(input = Vec<Rucksack>)]
+#[aoc(parser = LineParser)]
+#[aoc(part1(output = usize, runner = part1))]
+#[aoc(part2(output = usize, runner = part2))]
 pub struct Day03;
-
-impl AocSolution for Day03 {
-    type Input = Vec<Rucksack>;
-    type Part1Output = usize;
-    type Part2Output = usize;
-
-    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
-        parse_input_lines(raw.as_ref())
-    }
-
-    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        Ok(part1(input))
-    }
-
-    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        Ok(part2(input))
-    }
-}
 
 pub fn part1(input: Vec<Rucksack>) -> usize {
     input

@@ -22,6 +22,9 @@ use std::str::FromStr;
 pub use impls::*;
 pub mod impls;
 
+/// Uses the underlying FromStr impl of T
+pub struct FromStrParser<T: FromStr>(*const PhantomData<T>);
+
 /// Parse input in the form of x=<a>..<b> to `RangeInclusive<isize>`
 pub struct RangeParser;
 
@@ -69,6 +72,18 @@ pub struct GroupsParser<T>(*const PhantomData<T>);
 
 /// Transforms the raw string input into a Vec<char>
 pub struct CharVecParser;
+
+impl<T> AocInputParser for FromStrParser<T>
+where
+    T: FromStr,
+    anyhow::Error: From<<T as FromStr>::Err>,
+{
+    type Output = T;
+
+    fn parse_input(raw: &str) -> Result<Self::Output> {
+        raw.parse().map_err(anyhow::Error::from)
+    }
+}
 
 impl AocInputParser for RangeParser {
     type Output = RangeInclusive<isize>;

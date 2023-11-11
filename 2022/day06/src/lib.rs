@@ -15,28 +15,15 @@
 #![warn(clippy::unwrap_used)]
 #![warn(clippy::expect_used)]
 
-use common::parsing::as_char_vec;
-use common::AocSolution;
+use aoc_solution::Aoc;
+use common::parsing::CharVecParser;
 
+#[derive(Aoc)]
+#[aoc(input = Vec<char>)]
+#[aoc(parser = CharVecParser)]
+#[aoc(part1(output = usize, runner = part1))]
+#[aoc(part2(output = usize, runner = part2))]
 pub struct Day06;
-
-impl AocSolution for Day06 {
-    type Input = Vec<char>;
-    type Part1Output = usize;
-    type Part2Output = usize;
-
-    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
-        as_char_vec(raw.as_ref())
-    }
-
-    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        Ok(part1(input))
-    }
-
-    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        Ok(part2(input))
-    }
-}
 
 // since our window size is 4 and 14 for part1 and part2 respectively,
 // it's more efficient to do full slice lookup as opposed to paying for the instantiation cost of a HashSet

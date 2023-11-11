@@ -16,5 +16,3 @@ pub mod benchmark;
 pub mod execution;
 pub mod input_read;
 pub mod parsing;
-
-pub use aoc_solution::{Aoc, AocSolution, AocSolutionSolver};

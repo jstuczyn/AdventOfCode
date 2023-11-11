@@ -16,32 +16,17 @@
 #![warn(clippy::expect_used)]
 
 use crate::types::RPSGame;
-use common::execution::execute;
-use common::parsing::parse_input_lines;
-use common::AocSolution;
-use std::path::Path;
+use aoc_solution::Aoc;
+use common::parsing::LineParser;
 
 mod types;
 
+#[derive(Aoc)]
+#[aoc(input = Vec<RPSGame>)]
+#[aoc(parser = LineParser)]
+#[aoc(part1(output = usize, runner = part1))]
+#[aoc(part2(output = usize, runner = part2))]
 pub struct Day02;
-
-impl AocSolution for Day02 {
-    type Input = Vec<RPSGame>;
-    type Part1Output = usize;
-    type Part2Output = usize;
-
-    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
-        parse_input_lines(raw.as_ref())
-    }
-
-    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        Ok(part1(input))
-    }
-
-    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        Ok(part2(input))
-    }
-}
 
 pub fn part1(input: Vec<RPSGame>) -> usize {
     input.into_iter().map(|p| p.play_as_shape()).sum()
@@ -49,10 +34,6 @@ pub fn part1(input: Vec<RPSGame>) -> usize {
 
 pub fn part2(input: Vec<RPSGame>) -> usize {
     input.into_iter().map(|p| p.play_as_result()).sum()
-}
-
-pub fn solve<P: AsRef<Path>>(input_file: P) {
-    execute(input_file, parse_input_lines, part1, part2)
 }
 
 #[cfg(test)]
