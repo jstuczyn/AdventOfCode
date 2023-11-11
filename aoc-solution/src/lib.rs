@@ -17,6 +17,8 @@ use std::fmt::{Display, Formatter};
 use std::path::Path;
 use std::time::{Duration, Instant};
 
+pub mod parser;
+
 extern crate aoc_derive;
 
 pub use aoc_derive::Aoc;

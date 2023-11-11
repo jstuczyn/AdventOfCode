@@ -107,7 +107,11 @@ impl AocContainer {
     // TODO: we need to ensure import of `AocInputParser`
     fn parser_impl(&self) -> TokenStream {
         if let Some(parser) = &self.attributes.parser {
-            quote! { #parser::parse_input(raw) }
+            quote! {
+                #[allow(unused_imports)]
+                use ::aoc_solution::parser::AocInputParser;
+                #parser::parse_input(raw)
+            }
         } else {
             self.unimplemented_inner("input parser")
         }
@@ -131,7 +135,7 @@ impl ToTokens for AocContainer {
         let p2_impl = self.part2_impl();
 
         tokens.extend(quote! {
-            impl aoc_solution::AocSolution for #ident {
+            impl ::aoc_solution::AocSolution for #ident {
                 type Input = #input_ty;
                 type Error = #error_ty;
                 type Part1Output = #p1_ty;
@@ -169,27 +173,17 @@ impl Parse for AocAttr {
             match attribute {
                 "input" => {
                     input.parse::<Token![=]>()?;
-                    let ident: syn::Type = input.parse()?;
-                    aocttr.input_type = Some(ident);
+                    aocttr.input_type = Some(input.parse()?);
                 }
                 "parser" => {
                     input.parse::<Token![=]>()?;
-                    let ident: syn::Ident = input.parse()?;
-                    aocttr.parser = Some(ident);
+                    aocttr.parser = Some(input.parse()?);
                 }
-                "part1" => {
-                    let ident: AocPart = input.parse()?;
-                    aocttr.part1 = Some(ident);
-                }
-                "part2" => {
-                    input.parse::<Token![=]>()?;
-                    let ident: AocPart = input.parse()?;
-                    aocttr.part2 = Some(ident);
-                }
+                "part1" => aocttr.part1 = Some(input.parse()?),
+                "part2" => aocttr.part2 = Some(input.parse()?),
                 "error" => {
                     input.parse::<Token![=]>()?;
-                    let ident: syn::Type = input.parse()?;
-                    aocttr.error_ty = Some(ident);
+                    aocttr.error_ty = Some(input.parse()?);
                 }
                 _ => {
                     return Err(Error::new(ident.span(), EXPECTED_ATTRIBUTE));
@@ -241,14 +235,8 @@ impl Parse for AocPart {
             content.parse::<Token![=]>()?;
 
             match attribute {
-                "output" => {
-                    let output_ty2: syn::Type = content.parse()?;
-                    aoc_part.output_ty = Some(output_ty2);
-                }
-                "runner" => {
-                    let runner2: Ident = content.parse()?;
-                    aoc_part.runner = Some(runner2);
-                }
+                "output" => aoc_part.output_ty = Some(content.parse()?),
+                "runner" => aoc_part.runner = Some(content.parse()?),
                 _ => return Err(syn::Error::new(ident.span(), EXPECTED_ATTRIBUTE)),
             }
             if !content.is_empty() {
