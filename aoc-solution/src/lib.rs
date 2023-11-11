@@ -12,33 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use anyhow::bail;
 use std::any::type_name;
 use std::fmt::{Display, Formatter};
 use std::path::Path;
 use std::time::{Duration, Instant};
 
+pub mod parser;
+
+extern crate aoc_derive;
+
+pub use aoc_derive::Aoc;
+
 pub trait AocSolution {
     type Input: Clone;
+    type Error: Display;
     type Part1Output: Display;
     type Part2Output: Display;
 
-    fn parse_input<M: AsRef<str>>(_raw: M) -> Result<Self::Input, anyhow::Error> {
-        bail!("unimplemented")
-    }
-
-    fn part1(_input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        bail!("unimplemented")
-    }
-
-    fn part2(_input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        bail!("unimplemented")
-    }
+    fn parse_input(_raw: &str) -> Result<Self::Input, Self::Error>;
+    fn part1(_input: Self::Input) -> Result<Self::Part1Output, Self::Error>;
+    fn part2(_input: Self::Input) -> Result<Self::Part2Output, Self::Error>;
 }
 
 pub trait AocSolutionSolver: AocSolution {
-    fn try_solve<M: AsRef<str>>(raw_input: M) {
-        match run::<Self, _>(raw_input) {
+    fn try_solve(raw_input: &str) {
+        match run::<Self>(raw_input) {
             Ok(result) => println!("{result}"),
             Err(err) => eprintln!("failed to solve aoc for '{}': {err}", type_name::<Self>()),
         }
@@ -59,8 +57,8 @@ impl<T> AocSolutionSolver for T where T: AocSolution {}
 
 pub struct DayResult<T: AocSolution + ?Sized> {
     parsing: Duration,
-    part1: TimedResult<T::Part1Output>,
-    part2: TimedResult<T::Part2Output>,
+    part1: TimedResult<Result<T::Part1Output, T::Error>>,
+    part2: TimedResult<Result<T::Part2Output, T::Error>>,
 }
 
 impl<T: AocSolution + ?Sized> Display for DayResult<T> {
@@ -71,8 +69,18 @@ impl<T: AocSolution + ?Sized> Display for DayResult<T> {
         writeln!(f, "PART 2:\t\t{:?}", self.part2.taken)?;
         writeln!(f)?;
         writeln!(f, "# RESULTS #")?;
-        writeln!(f, "PART 1:\t\t{}", self.part1.value)?;
-        writeln!(f, "PART 2:\t\t{}", self.part2.value)
+        let display_p1 = match &self.part1.value {
+            Ok(res) => res.to_string(),
+            Err(err) => format!("failed to solve: {err}"),
+        };
+
+        let display_p2 = match &self.part2.value {
+            Ok(res) => res.to_string(),
+            Err(err) => format!("failed to solve: {err}"),
+        };
+
+        writeln!(f, "PART 1:\t\t{display_p1}")?;
+        writeln!(f, "PART 2:\t\t{display_p2}")
     }
 }
 
@@ -103,23 +111,23 @@ fn timed<T, U, F: FnOnce(T) -> U>(f: F, input: T) -> TimedResult<U> {
     }
 }
 
-pub fn run_from_file<T, P>(path: P) -> Result<DayResult<T>, anyhow::Error>
+pub fn run_from_file<T, P>(path: P) -> Result<DayResult<T>, T::Error>
 where
     P: AsRef<Path>,
     T: AocSolution + ?Sized,
 {
-    run(std::fs::read_to_string(path)?)
+    let read_input = std::fs::read_to_string(path).expect("failed to read the file input");
+    run(&read_input)
 }
 
-pub fn run<T, M>(input: M) -> Result<DayResult<T>, anyhow::Error>
+pub fn run<T>(input: &str) -> Result<DayResult<T>, T::Error>
 where
     T: AocSolution + ?Sized,
-    M: AsRef<str>,
 {
     let parsed_input = timed(T::parse_input, input).transpose()?;
 
-    let part1 = timed(T::part1, parsed_input.value.clone()).transpose()?;
-    let part2 = timed(T::part2, parsed_input.value).transpose()?;
+    let part1 = timed(T::part1, parsed_input.value.clone());
+    let part2 = timed(T::part2, parsed_input.value);
 
     Ok(DayResult {
         parsing: parsed_input.taken,

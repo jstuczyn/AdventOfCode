@@ -16,36 +16,17 @@
 #![warn(clippy::expect_used)]
 
 use crate::types::Forest;
-use common::execution::execute;
-use common::AocSolution;
-use std::path::Path;
-use std::str::FromStr;
+use aoc_solution::Aoc;
+use common::parsing::FromStrParser;
 
 mod types;
 
+#[derive(Aoc)]
+#[aoc(input = Forest)]
+#[aoc(parser = FromStrParser)]
+#[aoc(part1(output = usize, runner = part1))]
+#[aoc(part2(output = usize, runner = part2))]
 pub struct Day08;
-
-impl AocSolution for Day08 {
-    type Input = Forest;
-    type Part1Output = usize;
-    type Part2Output = usize;
-
-    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
-        raw.as_ref().parse()
-    }
-
-    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        Ok(part1(input))
-    }
-
-    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        Ok(part2(input))
-    }
-}
-
-pub fn solve<P: AsRef<Path>>(input_file: P) {
-    execute(input_file, FromStr::from_str, part1, part2)
-}
 
 pub fn part1(input: Forest) -> usize {
     input.count_visible_trees()

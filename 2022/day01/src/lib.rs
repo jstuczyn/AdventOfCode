@@ -16,30 +16,17 @@
 #![warn(clippy::expect_used)]
 
 use crate::types::Elf;
-use common::parsing::parse_groups;
-use common::AocSolution;
+use aoc_solution::Aoc;
+use common::parsing::GroupsParser;
 
 mod types;
 
+#[derive(Aoc)]
+#[aoc(input = Vec<Elf>)]
+#[aoc(parser = GroupsParser)]
+#[aoc(part1(output = usize, runner = part1))]
+#[aoc(part2(output = usize, runner = part2))]
 pub struct Day01;
-
-impl AocSolution for Day01 {
-    type Input = Vec<Elf>;
-    type Part1Output = usize;
-    type Part2Output = usize;
-
-    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
-        parse_groups(raw.as_ref())
-    }
-
-    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        Ok(part1(input))
-    }
-
-    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        Ok(part2(input))
-    }
-}
 
 pub fn part1(input: Vec<Elf>) -> usize {
     input

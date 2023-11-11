@@ -16,29 +16,17 @@
 #![warn(clippy::expect_used)]
 
 use crate::types::FileSystem;
-use common::AocSolution;
+use aoc_solution::Aoc;
+use common::parsing::FromStrParser;
 
 mod types;
 
+#[derive(Aoc)]
+#[aoc(input = FileSystem)]
+#[aoc(parser = FromStrParser)]
+#[aoc(part1(output = usize, runner = part1))]
+#[aoc(part2(output = usize, runner = part2))]
 pub struct Day07;
-
-impl AocSolution for Day07 {
-    type Input = FileSystem;
-    type Part1Output = usize;
-    type Part2Output = usize;
-
-    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
-        raw.as_ref().parse()
-    }
-
-    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        Ok(part1(input))
-    }
-
-    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        Ok(part2(input))
-    }
-}
 
 pub fn part1(input: FileSystem) -> usize {
     input.sum_dirs_with_max_size(100000)

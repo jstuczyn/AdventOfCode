@@ -10,11 +10,12 @@ name = "day03_2022"
 path = "src/lib.rs"
 
 [dependencies]
+aoc-solution = { path = "../../aoc-solution" }
 common = { path =  "../../common" }
 anyhow = { workspace = true }
 
 [dev-dependencies]
-criterion = "0.4"
+criterion = "0.5"
 
 [[bench]]
 name = "benchmarks"

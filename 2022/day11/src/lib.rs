@@ -16,37 +16,18 @@
 #![warn(clippy::expect_used)]
 
 use crate::types::{Monkey, State, WorryDecrease};
-use common::execution::execute;
-use common::parsing::parse_groups;
-use common::AocSolution;
+use aoc_solution::Aoc;
+use common::parsing::GroupsParser;
 use num::integer::lcm;
-use std::path::Path;
 
 mod types;
 
+#[derive(Aoc)]
+#[aoc(input = Vec<Monkey>)]
+#[aoc(parser = GroupsParser)]
+#[aoc(part1(output = usize, runner = part1))]
+#[aoc(part2(output = usize, runner = part2))]
 pub struct Day11;
-
-impl AocSolution for Day11 {
-    type Input = Vec<Monkey>;
-    type Part1Output = usize;
-    type Part2Output = usize;
-
-    fn parse_input<M: AsRef<str>>(raw: M) -> Result<Self::Input, anyhow::Error> {
-        parse_groups(raw.as_ref())
-    }
-
-    fn part1(input: Self::Input) -> Result<Self::Part1Output, anyhow::Error> {
-        Ok(part1(input))
-    }
-
-    fn part2(input: Self::Input) -> Result<Self::Part2Output, anyhow::Error> {
-        Ok(part2(input))
-    }
-}
-
-pub fn solve<P: AsRef<Path>>(input_file: P) {
-    execute(input_file, parse_groups, part1, part2)
-}
 
 pub fn part1(input: Vec<Monkey>) -> usize {
     let mut state = State::new(input, WorryDecrease::DivByThree);
