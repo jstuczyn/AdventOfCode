@@ -13,6 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
-use day10_{year}::Day10;
+use day10_2022::Day10;
 
 define_aoc_benchmark!("input", Day10);
