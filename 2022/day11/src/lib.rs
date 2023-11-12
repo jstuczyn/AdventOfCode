@@ -15,8 +15,7 @@
 #![warn(clippy::unwrap_used)]
 #![warn(clippy::expect_used)]
 
-pub use crate::types::Monkey;
-use crate::types::{State, WorryDecrease};
+use crate::types::{Monkey, State, WorryDecrease};
 use aoc_solution::Aoc;
 use common::parsing::GroupsParser;
 use num::integer::lcm;

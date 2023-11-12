@@ -15,7 +15,7 @@
 #![warn(clippy::unwrap_used)]
 #![warn(clippy::expect_used)]
 
-pub use crate::types::AssignmentPair;
+use crate::types::AssignmentPair;
 use aoc_solution::Aoc;
 use common::parsing::LineParser;
 

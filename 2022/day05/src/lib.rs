@@ -15,7 +15,7 @@
 #![warn(clippy::unwrap_used)]
 #![warn(clippy::expect_used)]
 
-pub use crate::types::Supplies;
+use crate::types::Supplies;
 use aoc_solution::Aoc;
 use common::parsing::FromStrParser;
 

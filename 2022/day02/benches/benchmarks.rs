@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
-use common::parsing::parse_input_lines;
-use day02_2022::{part1, part2, RPSGame};
+use day02_2022::Day02;
 
-define_aoc_benchmark!("input", parse_input_lines, Vec<RPSGame>);
+define_aoc_benchmark!("input", Day02);

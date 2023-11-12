@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
-use common::parsing::as_char_vec;
-use day06_2022::{part1, part2};
+use day06_2022::Day06;
 
-define_aoc_benchmark!("input", as_char_vec, Vec<char>);
+define_aoc_benchmark!("input", Day06);

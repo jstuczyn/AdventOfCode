@@ -15,7 +15,7 @@
 #![warn(clippy::unwrap_used)]
 #![warn(clippy::expect_used)]
 
-pub use crate::types::Rucksack;
+use crate::types::Rucksack;
 use aoc_solution::Aoc;
 use common::parsing::LineParser;
 

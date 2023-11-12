@@ -25,7 +25,7 @@ where
     parse(&raw).map_err(|err| {
         io::Error::new(
             io::ErrorKind::InvalidData,
-            format!("input could not be parsed into desired type - {err}"),
+            format!("input could not be parsed into desired type: {err}"),
         )
     })
 }

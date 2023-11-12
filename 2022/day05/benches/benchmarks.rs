@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
-use day05_2022::{part1, part2, Supplies};
-use std::str::FromStr;
+use day05_2022::Day05;
 
-define_aoc_benchmark!("input", FromStr::from_str, Supplies);
+define_aoc_benchmark!("input", Day05);
