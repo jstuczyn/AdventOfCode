@@ -14,7 +14,7 @@
 
 use crate::aoc::AocContainer;
 use proc_macro::TokenStream;
-use proc_macro_error::{abort, OptionExt};
+use proc_macro_error::abort;
 use quote::ToTokens;
 use syn::DeriveInput;
 
