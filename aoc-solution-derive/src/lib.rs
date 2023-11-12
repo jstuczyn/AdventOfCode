@@ -24,9 +24,7 @@ mod aoc;
 pub fn derive_aoc_solution(input: TokenStream) -> TokenStream {
     let DeriveInput { attrs, ident, .. } = syn::parse_macro_input!(input);
 
-    let aoc_attributes = aoc::parse_aoc_attrs(&attrs).expect_or_abort(
-        "expected #[aoc(...)] attribute to be present when used with Aoc derive trait",
-    );
+    let aoc_attributes = aoc::parse_aoc_attrs(&attrs).unwrap_or_default();
 
     AocContainer::new(aoc_attributes, ident)
         .to_token_stream()
