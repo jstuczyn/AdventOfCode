@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
-use common::parsing::parse_groups;
-use day01_2022::{part1, part2, Elf};
+use day01_2022::Day01;
 
-define_aoc_benchmark!("input", parse_groups, Vec<Elf>);
+define_aoc_benchmark!("input", Day01);

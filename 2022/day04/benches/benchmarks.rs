@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
-use common::parsing::parse_input_lines;
-use day04_2022::{part1, part2, AssignmentPair};
+use day04_2022::Day04;
 
-define_aoc_benchmark!("input", parse_input_lines, Vec<AssignmentPair>);
+define_aoc_benchmark!("input", Day04);

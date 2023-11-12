@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
-use common::parsing::parse_input_lines;
-use day03_2022::{part1, part2, Rucksack};
+use day03_2022::Day03;
 
-define_aoc_benchmark!("input", parse_input_lines, Vec<Rucksack>);
+define_aoc_benchmark!("input", Day03);

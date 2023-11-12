@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
-use day08_2022::{part1, part2, Forest};
-use std::str::FromStr;
+use day08_2022::Day08;
 
-define_aoc_benchmark!("input", FromStr::from_str, Forest);
+define_aoc_benchmark!("input", Day08);

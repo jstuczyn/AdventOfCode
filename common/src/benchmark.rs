@@ -14,13 +14,15 @@
 
 #[macro_export]
 macro_rules! define_aoc_benchmark {
-    ($input: literal, $parser: expr, $typ: ty) => {
+    ($input: literal, $typ: ty) => {
+        use ::aoc_solution::AocSolution;
+
         use common::input_read::read_input;
         use criterion::{black_box, criterion_group, criterion_main, BatchSize, Criterion};
         use std::fs;
 
-        fn get_input() -> $typ {
-            read_input($input, $parser).unwrap()
+        fn get_input() -> <$typ as AocSolution>::Input {
+            read_input($input, <$typ as AocSolution>::parse_input).unwrap()
         }
 
         fn input_parse_benchmark(c: &mut Criterion) {
@@ -28,7 +30,7 @@ macro_rules! define_aoc_benchmark {
             let bench_name = format!("{}_input_parse", env!("CARGO_PKG_NAME"));
             c.bench_function(&bench_name, move |b| {
                 b.iter(|| {
-                    let _: $typ = $parser(&input).unwrap();
+                    let _ = <$typ as AocSolution>::parse_input(&input).unwrap();
                 })
             });
         }
@@ -39,7 +41,7 @@ macro_rules! define_aoc_benchmark {
             c.bench_function(&bench_name, move |b| {
                 b.iter_batched(
                     || input.clone(),
-                    |input| part1(black_box(input)),
+                    |input| <$typ as AocSolution>::part1((black_box(input))),
                     BatchSize::SmallInput,
                 )
             });
@@ -51,7 +53,7 @@ macro_rules! define_aoc_benchmark {
             c.bench_function(&bench_name, move |b| {
                 b.iter_batched(
                     || input.clone(),
-                    |input| part2(black_box(input)),
+                    |input| <$typ as AocSolution>::part2((black_box(input))),
                     BatchSize::SmallInput,
                 )
             });

@@ -13,5 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
+use day{{day}}_{year}::Day{{day}};
 
-// define_aoc_benchmark!("input", parser, ty);
+define_aoc_benchmark!("input", Day{{day}});

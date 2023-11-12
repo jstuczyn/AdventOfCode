@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use common::define_aoc_benchmark;
-use day07_2022::{part1, part2, FileSystem};
-use std::str::FromStr;
+use day07_2022::Day07;
 
-define_aoc_benchmark!("input", FromStr::from_str, FileSystem);
+define_aoc_benchmark!("input", Day07);
