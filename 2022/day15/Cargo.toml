@@ -1,0 +1,22 @@
+[package]
+name = "day15_2022"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "day15_2022"
+path = "src/lib.rs"
+
+[dependencies]
+aoc-solution = { path = "../../aoc-solution" }
+common = { path =  "../../common" }
+anyhow = { workspace = true }
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "benchmarks"
+harness = false

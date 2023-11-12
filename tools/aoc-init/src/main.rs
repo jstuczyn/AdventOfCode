@@ -14,13 +14,11 @@
 
 use anyhow::{anyhow, bail, Context};
 use cargo_edit::LocalManifest;
-use cargo_generate::{generate, GenerateArgs, TemplatePath, Vcs};
+use cargo_generate::{generate, GenerateArgs, TemplatePath};
 use clap::Parser;
-use std::fs::OpenOptions;
-use std::io::{LineWriter, Read, Write};
 use std::path::{Path, PathBuf};
 use std::{env, fs};
-use toml_edit::{value, InlineTable, Item, Table, Value};
+use toml_edit::{InlineTable, Value};
 
 /// Simple Advent of Code template initialiser.
 #[derive(Parser, Debug)]
