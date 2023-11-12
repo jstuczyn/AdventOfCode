@@ -5,6 +5,8 @@ members = [
     "aoc-solution",
     "aoc-solution-derive",
     "solution-runner",
+    "common",
+    "tools/aoc-init",
     "2022/day01",
     "2022/day02",
     "2022/day03",
@@ -13,9 +15,9 @@ members = [
     "2022/day06",
     "2022/day07",
     "2022/day08",
-    "2022/day11",
-    "common"
+    "2022/day11"
 ]
 
 [workspace.dependencies]
+clap = "4"
 anyhow = "1.0.75"

@@ -40,4 +40,12 @@ Alternatively, there's a dedicated `solution-runner` binary that's can run any s
 ./solution-runner --year 2022 --day 1
 ```
 
+## Adding new day
+
+Run the following command to generate the template:
+
+```shell
+cargo run -p aoc-init -- --year $YEAR --day $DAY
+```
+
 [//]: # (It further has optional flags `custom-input-filepath` and `custom-input` for providing non-default inputs.)
