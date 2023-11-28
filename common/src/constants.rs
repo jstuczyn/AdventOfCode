@@ -12,7 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::define_aoc_benchmark;
-use day{{day}}_{{year}}::Day{{day}};
-
-define_aoc_benchmark!("input", Day{{day}});
+pub const FILLED_PIXEL: char = '█';
+pub const EMPTY_PIXEL: char = '⠀';

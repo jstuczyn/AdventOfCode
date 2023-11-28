@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::define_aoc_benchmark;
-use day{{day}}_{{year}}::Day{{day}};
+use aoc_solution::AocSolutionSolver;
+use day10_2022::Day10;
 
-define_aoc_benchmark!("input", Day{{day}});
+#[cfg(not(tarpaulin))]
+fn main() {
+    Day10::try_solve_from_file("input")
+}

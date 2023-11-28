@@ -80,8 +80,9 @@ impl<T: AocSolution + ?Sized> Display for DayResult<T> {
             Err(err) => format!("failed to solve: {err}"),
         };
 
-        writeln!(f, "PART 1:\t\t{display_p1}")?;
-        writeln!(f, "PART 2:\t\t{display_p2}")
+        writeln!(f, "PART 1:\n{display_p1}")?;
+        writeln!(f)?;
+        writeln!(f, "PART 2:\n{display_p2}")
     }
 }
 
