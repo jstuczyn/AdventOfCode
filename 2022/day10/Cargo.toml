@@ -13,6 +13,7 @@ path = "src/lib.rs"
 aoc-solution = { path = "../../aoc-solution" }
 common = { path =  "../../common" }
 anyhow = { workspace = true }
+cfg-if = "1.0.0"
 
 [dev-dependencies]
 criterion = "0.5"

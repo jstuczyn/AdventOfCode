@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::types::Cpu;
+use crate::types::{Cpu, Crt};
 use aoc_solution::Aoc;
 use common::parsing::LineParser;
 use types::Instruction;
@@ -31,7 +31,16 @@ pub fn part1(input: Vec<Instruction>) -> isize {
 }
 
 pub fn part2(input: Vec<Instruction>) -> String {
-    "unimplemented".into()
+    let mut crt = Crt::new(Cpu::new(input));
+    crt.draw();
+
+    cfg_if::cfg_if! {
+        if #[cfg(test)] {
+             crt.to_display(false)
+        } else {
+            crt.to_display(true)
+        }
+    }
 }
 
 #[cfg(test)]
@@ -275,15 +284,15 @@ noop"#,
         )
     }
 
-    // #[test]
-    // fn part1_sample_input() {
-    //     let expected = ();
-    //     assert_eq!(expected, part1(sample_input()))
-    // }
-    //
-    // #[test]
-    // fn part2_sample_input() {
-    //     let expected = ();
-    //     assert_eq!(expected, part2(sample_input()))
-    // }
+    #[test]
+    fn part2_sample_input() {
+        let expected = r#"##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....
+"#;
+        assert_eq!(expected, part2(sample_input2()))
+    }
 }
