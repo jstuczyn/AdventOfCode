@@ -15,9 +15,10 @@ Keeping track of solutions to various puzzles from https://adventofcode.com/
 > - www.adventofcode.com
 
 ## Latest puzzle
-[![Completion Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jstuczyn/AdventOfCode/master/.github/badges/completion2022.json)](https://adventofcode.com/2022/about)
+[![Completion Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jstuczyn/AdventOfCode/master/.github/badges/completion2023.json)](https://adventofcode.com/2023/about)
 
 ## Previous years
+[![Completion Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jstuczyn/AdventOfCode/master/.github/badges/completion2022.json)](https://adventofcode.com/2022/about)
 [![Completion Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jstuczyn/AdventOfCode/master/.github/badges/completion2021.json)](https://adventofcode.com/2021/about)
 [![Completion Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jstuczyn/AdventOfCode/master/.github/badges/completion2020.json)](https://adventofcode.com/2020/about)
 [![Completion Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jstuczyn/AdventOfCode/master/.github/badges/completion2019.json)](https://adventofcode.com/2019/about)
