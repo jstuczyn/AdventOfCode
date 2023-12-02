@@ -13,19 +13,54 @@
 // limitations under the License.
 
 use anyhow::{anyhow, bail};
+use std::cmp::max;
 use std::str::FromStr;
 
 #[derive(Debug, Eq, PartialEq, Clone)]
 pub struct Game {
-    id: usize,
+    pub id: usize,
     sets: Vec<CubeSet>,
 }
 
-#[derive(Debug, Eq, PartialEq, Clone, Copy)]
+impl Game {
+    pub fn is_possible(&self, content: CubeSet) -> bool {
+        self.sets.iter().all(|s| s.could_contain(&content))
+    }
+
+    pub fn minimal_set(self) -> CubeSet {
+        self.sets
+            .into_iter()
+            .fold(CubeSet::default(), |acc, next| acc.reduce(next))
+    }
+}
+
+#[derive(Debug, Default, Eq, PartialEq, Clone, Copy)]
 pub struct CubeSet {
     red: usize,
     green: usize,
     blue: usize,
+}
+
+impl CubeSet {
+    pub const fn new(red: usize, green: usize, blue: usize) -> Self {
+        CubeSet { red, green, blue }
+    }
+
+    pub const fn could_contain(&self, other: &Self) -> bool {
+        self.red <= other.red && self.green <= other.green && self.blue <= other.blue
+    }
+
+    pub fn power(&self) -> usize {
+        self.red * self.blue * self.green
+    }
+
+    pub fn reduce(mut self, other: Self) -> Self {
+        self.red = max(self.red, other.red);
+        self.green = max(self.green, other.green);
+        self.blue = max(self.blue, other.blue);
+
+        self
+    }
 }
 
 impl FromStr for Game {
