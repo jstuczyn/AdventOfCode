@@ -30,7 +30,7 @@ impl Game {
     pub fn minimal_set(self) -> CubeSet {
         self.sets
             .into_iter()
-            .fold(CubeSet::default(), |acc, next| acc.reduce(next))
+            .fold(CubeSet::default(), CubeSet::reduce)
     }
 }
 
