@@ -16,6 +16,9 @@ use anyhow::{anyhow, bail, Context};
 use cargo_edit::LocalManifest;
 use cargo_generate::{generate, GenerateArgs, TemplatePath};
 use clap::Parser;
+use reqwest::header::{HeaderMap, CONTENT_TYPE, COOKIE, USER_AGENT};
+use reqwest::redirect::Policy;
+use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::{env, fs};
 use toml_edit::{InlineTable, Value};
@@ -171,6 +174,45 @@ fn add_to_solution_runner(args: &Args, root: &Path) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn try_get_input(args: &Args, root: &Path) -> anyhow::Result<()> {
+    let year = &args.year;
+    let day = &args.day;
+    let day_normalised: u8 = day.parse()?;
+
+    let input_file = root.join("inputs").join(year).join(format!("day{day}"));
+
+    let mut file = fs::File::create(input_file)?;
+
+    let Ok(session_cookie) = env::var("AOC_SESSION") else {
+        return Ok(());
+    };
+
+    let cookie_header = format!("session={}", session_cookie.trim());
+
+    let mut headers = HeaderMap::new();
+    headers.insert(COOKIE, cookie_header.parse()?);
+    headers.insert(CONTENT_TYPE, "text/plain".parse()?);
+    headers.insert(
+        USER_AGENT,
+        "https://github.com/jstuczyn/AdventOfCode by jedrzej.stuczynski@gmail.com".parse()?,
+    );
+
+    let input = reqwest::blocking::Client::builder()
+        .default_headers(headers)
+        .redirect(Policy::none())
+        .build()?
+        .get(format!(
+            "https://adventofcode.com/{year}/day/{day_normalised}/input"
+        ))
+        .send()
+        .and_then(|response| response.error_for_status())
+        .and_then(|response| response.bytes())?;
+
+    file.write_all(&input)?;
+
+    Ok(())
+}
+
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     let root = args.workspace_root.clone().unwrap_or(env::current_dir()?);
@@ -178,6 +220,7 @@ fn main() -> anyhow::Result<()> {
     generate_project_files(&args, &root)?;
     add_to_workspace(&args, &root)?;
     add_to_solution_runner(&args, &root)?;
+    try_get_input(&args, &root)?;
 
     Ok(())
 }
