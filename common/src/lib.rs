@@ -14,6 +14,7 @@
 
 pub mod benchmark;
 pub mod constants;
+pub mod helpers;
 pub mod input_read;
 pub mod parsing;
 pub mod types;

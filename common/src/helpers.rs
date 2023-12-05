@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Jedrzej Stuczynski
+// Copyright 2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::define_aoc_benchmark;
-use day06_2022::Day06;
+use std::path::{Path, PathBuf};
 
-define_aoc_benchmark!("inputs/2022/day06", Day06);
+pub const COMMON_ROOT: &str = env!("CARGO_MANIFEST_DIR");
+
+/// Creates a path relative to the project root
+pub fn root_path<P: AsRef<Path>>(segment: P) -> PathBuf {
+    // hehe, that's a disgusting hack, but hey, it works
+    PathBuf::from(COMMON_ROOT).join("..").join(segment)
+}

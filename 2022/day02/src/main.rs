@@ -13,9 +13,10 @@
 // limitations under the License.
 
 use aoc_solution::AocSolutionSolver;
+use common::helpers::root_path;
 use day02_2022::Day02;
 
 #[cfg(not(tarpaulin))]
 fn main() {
-    Day02::try_solve_from_file("input")
+    Day02::try_solve_from_file(root_path("inputs/2022/day02"))
 }
