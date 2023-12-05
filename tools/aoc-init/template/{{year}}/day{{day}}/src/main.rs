@@ -17,5 +17,5 @@ use day{{day}}_{{year}}::Day{{day}};
 
 #[cfg(not(tarpaulin))]
 fn main() {
-    Day{{day}}::try_solve_from_file("input")
+    Day{{day}}::try_solve_from_file(root_path("input/{{year}}/day{{day}}")
 }

@@ -15,4 +15,4 @@
 use common::define_aoc_benchmark;
 use day10_2022::Day10;
 
-define_aoc_benchmark!("input", Day10);
+define_aoc_benchmark!("inputs/2022/day10", Day10);

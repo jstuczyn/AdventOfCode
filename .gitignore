@@ -15,4 +15,4 @@ Cargo.lock
 **/input
 
 ## current
-**/*.input
+inputs/*

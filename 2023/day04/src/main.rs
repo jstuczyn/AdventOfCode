@@ -13,9 +13,10 @@
 // limitations under the License.
 
 use aoc_solution::AocSolutionSolver;
+use common::helpers::root_path;
 use day04_2023::Day04;
 
 #[cfg(not(tarpaulin))]
 fn main() {
-    Day04::try_solve_from_file("input")
+    Day04::try_solve_from_file(root_path("inputs/2023/day04"))
 }

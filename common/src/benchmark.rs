@@ -17,16 +17,17 @@ macro_rules! define_aoc_benchmark {
     ($input: literal, $typ: ty) => {
         use ::aoc_solution::AocSolution;
 
+        use common::helpers::root_path;
         use common::input_read::read_input;
         use criterion::{black_box, criterion_group, criterion_main, BatchSize, Criterion};
         use std::fs;
 
         fn get_input() -> <$typ as AocSolution>::Input {
-            read_input($input, <$typ as AocSolution>::parse_input).unwrap()
+            read_input(root_path($input), <$typ as AocSolution>::parse_input).unwrap()
         }
 
         fn input_parse_benchmark(c: &mut Criterion) {
-            let input = fs::read_to_string($input).unwrap();
+            let input = fs::read_to_string(root_path($input)).unwrap();
             let bench_name = format!("{}_input_parse", env!("CARGO_PKG_NAME"));
             c.bench_function(&bench_name, move |b| {
                 b.iter(|| {
