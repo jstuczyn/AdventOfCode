@@ -14,9 +14,13 @@
 
 use anyhow::{anyhow, bail};
 use common::parsing::split_to_string_groups;
+use futures::stream::FuturesUnordered;
+use futures::StreamExt;
 use itertools::Itertools;
+use rayon::prelude::*;
 use std::ops::RangeInclusive;
 use std::str::FromStr;
+use std::sync::Arc;
 
 #[derive(Debug, Clone)]
 pub enum Seeds {
@@ -90,7 +94,38 @@ impl Almanac {
                 .map(|&s| self.seed_to_location(s))
                 .min()
                 .unwrap(),
-            Seeds::Ranges(_) => 0,
+            Seeds::Ranges(ranges) => {
+                let ranges = ranges.clone();
+                let rt = tokio::runtime::Runtime::new().unwrap();
+                let this = Arc::new(self.clone());
+
+                rt.block_on(async {
+                    let mut tasks = ranges
+                        .into_iter()
+                        .map(|range| {
+                            let that = Arc::clone(&this);
+                            tokio::spawn(async move {
+                                range
+                                    .into_par_iter()
+                                    .map(|s| that.seed_to_location(s))
+                                    .min()
+                                    .unwrap()
+                            })
+                        })
+                        .collect::<FuturesUnordered<_>>();
+
+                    // wait for all futures to finish
+                    let mut min = usize::MAX;
+                    while let Some(completed) = tasks.next().await {
+                        let result = completed.expect("execution failure");
+                        if result < min {
+                            min = result
+                        }
+                    }
+
+                    min
+                })
+            }
             Seeds::Invalid => unreachable!(),
         }
     }
@@ -134,13 +169,15 @@ impl FromStr for Map {
     type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Map {
-            entries: s
-                .lines()
-                .skip(1)
-                .map(MapEntry::from_str)
-                .collect::<Result<_, _>>()?,
-        })
+        let mut entries = s
+            .lines()
+            .skip(1)
+            .map(MapEntry::from_str)
+            .collect::<Result<Vec<_>, _>>()?;
+
+        entries.sort_unstable_by_key(|e| *e.source_range.start());
+
+        Ok(Map { entries })
     }
 }
 
