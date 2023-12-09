@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use aoc_solution::AocSolutionSolver;
-use common::helpers::root_path;
-use day{{day}}_{{year}}::Day{{day}};
+use common::define_aoc_benchmark;
+use day05_2023::Day05;
 
-#[cfg(not(tarpaulin))]
-fn main() {
-    Day{{day}}::try_solve_from_file(root_path("inputs/{{year}}/day{{day}}"))
-}
+define_aoc_benchmark!("input/2023/day05", Day05);

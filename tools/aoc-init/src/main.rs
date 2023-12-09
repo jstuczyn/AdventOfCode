@@ -179,8 +179,10 @@ fn try_get_input(args: &Args, root: &Path) -> anyhow::Result<()> {
     let day = &args.day;
     let day_normalised: u8 = day.parse()?;
 
-    let input_file = root.join("inputs").join(year).join(format!("day{day}"));
+    let input_dir = root.join("inputs").join(year);
+    let input_file = input_dir.join(format!("day{day}"));
 
+    fs::create_dir_all(input_dir)?;
     let mut file = fs::File::create(input_file)?;
 
     let Ok(session_cookie) = env::var("AOC_SESSION") else {
