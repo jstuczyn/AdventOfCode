@@ -18,14 +18,14 @@ use futures::stream::FuturesUnordered;
 use futures::StreamExt;
 use itertools::Itertools;
 use rayon::prelude::*;
-use std::ops::RangeInclusive;
+use std::ops::Range;
 use std::str::FromStr;
 use std::sync::Arc;
 
 #[derive(Debug, Clone)]
 pub enum Seeds {
     Individual(Vec<usize>),
-    Ranges(Vec<RangeInclusive<usize>>),
+    Ranges(Vec<Range<usize>>),
     Invalid,
 }
 
@@ -59,14 +59,14 @@ impl Map {
 
 #[derive(Debug, Clone)]
 pub struct MapEntry {
-    source_range: RangeInclusive<usize>,
+    source_range: Range<usize>,
     destination_range_start: usize,
 }
 
 impl MapEntry {
     pub fn map_to_destination(&self, value: usize) -> usize {
         debug_assert!(self.source_range.contains(&value));
-        let offset = value - *self.source_range.start();
+        let offset = value - self.source_range.start;
 
         self.destination_range_start + offset
     }
@@ -82,7 +82,7 @@ impl Almanac {
         let ranges = seeds
             .into_iter()
             .tuples()
-            .map(|(start, length)| RangeInclusive::new(start, start + length))
+            .map(|(start, length)| start..start + length)
             .collect();
         self.seeds = Seeds::Ranges(ranges);
     }
@@ -159,7 +159,7 @@ impl FromStr for MapEntry {
         let range_length: usize = raw.next().ok_or(anyhow!("no range length"))?.parse()?;
 
         Ok(MapEntry {
-            source_range: RangeInclusive::new(source_start, source_start + range_length),
+            source_range: source_start..source_start + range_length,
             destination_range_start,
         })
     }
@@ -175,7 +175,7 @@ impl FromStr for Map {
             .map(MapEntry::from_str)
             .collect::<Result<Vec<_>, _>>()?;
 
-        entries.sort_unstable_by_key(|e| *e.source_range.start());
+        entries.sort_unstable_by_key(|e| e.source_range.start);
 
         Ok(Map { entries })
     }
