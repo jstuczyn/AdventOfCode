@@ -1,4 +1,4 @@
-// Copyright 2023 Jedrzej Stuczynski
+// Copyright 2024 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 use aoc_solution::Aoc;
 
-mod types;
+mod common;
 
 #[derive(Aoc)]
 pub struct Day{{day}};
