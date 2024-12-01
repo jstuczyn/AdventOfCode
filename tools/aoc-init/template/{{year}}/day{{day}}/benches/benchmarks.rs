@@ -15,4 +15,4 @@
 use common::define_aoc_benchmark;
 use day{{day}}_{{year}}::Day{{day}};
 
-define_aoc_benchmark!("input/{{year}}/day{{day}}", Day{{day}});
+define_aoc_benchmark!("inputs/{{year}}/day{{day}}", Day{{day}});
