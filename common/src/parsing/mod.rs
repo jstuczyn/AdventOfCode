@@ -23,7 +23,7 @@ pub use impls::*;
 pub mod impls;
 
 /// Uses the underlying FromStr impl of T
-pub struct FromStrParser<T: FromStr>(*const PhantomData<T>);
+pub struct FromStrParser<T: FromStr>(PhantomData<T>);
 
 /// Parse input in the form of x=<a>..<b> to `RangeInclusive<isize>`
 pub struct RangeParser;
@@ -35,14 +35,14 @@ pub struct RangeParser;
 /// ...
 ///
 /// to Vec<T>
-pub struct LineParser<T>(*const PhantomData<T>);
+pub struct LineParser<T>(PhantomData<T>);
 
 /// Parses input in the form of:
 ///
 /// value1,value2,...
 ///
 /// to Vec<T>
-pub struct CommaSeparatedParser<T>(*const PhantomData<T>);
+pub struct CommaSeparatedParser<T>(PhantomData<T>);
 
 /// Splits input in the form of:
 ///
@@ -68,7 +68,7 @@ pub struct StringGroupsParser;
 /// ...
 ///
 /// to Vec<T>
-pub struct GroupsParser<T>(*const PhantomData<T>);
+pub struct GroupsParser<T>(PhantomData<T>);
 
 /// Transforms the raw string input into a Vec<char>
 pub struct CharVecParser;

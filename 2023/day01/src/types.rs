@@ -14,17 +14,15 @@
 
 pub fn calculate_calibration_value_sum(raw: Vec<String>, allow_human_digits: bool) -> usize {
     if !allow_human_digits {
-        raw.into_iter()
-            .map(|s| try_from_ascii_digits(&s).unwrap())
-            .sum()
+        raw.into_iter().map(|s| try_from_ascii_digits(&s)).sum()
     } else {
         raw.into_iter()
-            .map(|s| try_from_ascii_and_human_digits(&s).unwrap())
+            .map(|s| try_from_ascii_and_human_digits(&s))
             .sum()
     }
 }
 
-pub fn try_from_ascii_digits(s: &str) -> Result<usize, anyhow::Error> {
+pub fn try_from_ascii_digits(s: &str) -> usize {
     // nice rust solution:
     // let first = s.chars().find(|c| c.is_ascii_digit()).ok_or(anyhow!(
     //     "could not find the first digit of the calibration value"
@@ -59,10 +57,10 @@ pub fn try_from_ascii_digits(s: &str) -> Result<usize, anyhow::Error> {
         i -= 1;
     };
 
-    Ok((first * 10 + last) as usize)
+    (first * 10 + last) as usize
 }
 
-pub fn try_from_ascii_and_human_digits(s: &str) -> Result<usize, anyhow::Error> {
+pub fn try_from_ascii_and_human_digits(s: &str) -> usize {
     // SAFETY: we know advent of code inputs are restricted to ascii characters
     let bytes = s.as_bytes();
 
@@ -92,7 +90,7 @@ pub fn try_from_ascii_and_human_digits(s: &str) -> Result<usize, anyhow::Error> 
         i -= 1;
     };
 
-    Ok((first * 10 + last) as usize)
+    (first * 10 + last) as usize
 }
 
 const fn might_begin_human_readable(c: char) -> bool {
@@ -157,8 +155,8 @@ mod tests {
 
     #[test]
     fn from_human_ascii() {
-        assert_eq!(83, try_from_ascii_and_human_digits("eighthree").unwrap());
-        assert_eq!(79, try_from_ascii_and_human_digits("sevenine").unwrap());
-        assert_eq!(94, try_from_ascii_and_human_digits("9sixonefour").unwrap());
+        assert_eq!(83, try_from_ascii_and_human_digits("eighthree"));
+        assert_eq!(79, try_from_ascii_and_human_digits("sevenine"));
+        assert_eq!(94, try_from_ascii_and_human_digits("9sixonefour"));
     }
 }
