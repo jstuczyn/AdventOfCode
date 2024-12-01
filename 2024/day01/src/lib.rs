@@ -12,39 +12,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::common::LocationLists;
+use ::common::parsing::FromStrParser;
 use aoc_solution::Aoc;
 
 mod common;
 
 #[derive(Aoc)]
-pub struct Day{{day}};
+#[aoc(input = LocationLists)]
+#[aoc(parser = FromStrParser)]
+#[aoc(part1(output = usize, runner = part1))]
+#[aoc(part2(output = usize, runner = part2))]
+pub struct Day01;
 
-pub fn part1(input: ()) -> ! {
-    panic!("unimplemented")
+pub fn part1(input: LocationLists) -> usize {
+    input.sorted().into_iter().map(|r| r.difference()).sum()
 }
 
-pub fn part2(input: ()) -> ! {
-    panic!("unimplemented")
+pub fn part2(input: LocationLists) -> usize {
+    input.similarity_score()
 }
 
 #[cfg(test)]
 #[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
+    use aoc_solution::parser::AocInputParser;
 
-    fn sample_input() -> ! {
-        todo!()
+    fn sample_input() -> LocationLists {
+        FromStrParser::parse_input(
+            r#"3   4
+4   3
+2   5
+1   3
+3   9
+3   3"#,
+        )
+        .unwrap()
     }
 
     #[test]
     fn part1_sample_input() {
-        let expected = ();
+        let expected = 11;
         assert_eq!(expected, part1(sample_input()))
     }
 
     #[test]
     fn part2_sample_input() {
-        let expected = ();
+        let expected = 31;
         assert_eq!(expected, part2(sample_input()))
     }
 }
