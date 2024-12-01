@@ -11,13 +11,16 @@ path = "src/lib.rs"
 
 [dependencies]
 aoc-solution = { path = "../../aoc-solution" }
-common = { path =  "../../common" }
+common = { path = "../../common" }
 anyhow = { workspace = true }
-num = "0.4.0"
+num = { workspace = true }
 
 [dev-dependencies]
-criterion = "0.5"
+criterion = { workspace = true }
 
 [[bench]]
 name = "benchmarks"
 harness = false
+
+[lints]
+workspace = true

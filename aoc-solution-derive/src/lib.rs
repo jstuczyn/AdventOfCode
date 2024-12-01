@@ -33,6 +33,8 @@ pub fn derive_aoc_solution(input: TokenStream) -> TokenStream {
 
 trait ResultExt<T> {
     fn unwrap_or_abort(self) -> T;
+
+    #[allow(dead_code)]
     fn expect_or_abort(self, message: &str) -> T;
 }
 

@@ -30,6 +30,8 @@ pub(crate) fn digits(num: u32) -> usize {
 
 pub(crate) fn digits_to_number(digits: Vec<char>) -> u32 {
     const RADIX: u32 = 10;
+    // SAFETY: 10 is a valid radix value
+    #[allow(clippy::unwrap_used)]
     digits
         .into_iter()
         .map(|c| c.to_digit(RADIX).unwrap())

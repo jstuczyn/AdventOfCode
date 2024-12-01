@@ -93,10 +93,13 @@ impl Almanac {
                 .iter()
                 .map(|&s| self.seed_to_location(s))
                 .min()
-                .unwrap(),
+                .unwrap_or(usize::MAX),
             Seeds::Ranges(ranges) => {
                 let ranges = ranges.clone();
-                let rt = tokio::runtime::Runtime::new().unwrap();
+
+                // if we can't create a new runtime, then we have a problem and have to abort
+                #[allow(clippy::expect_used)]
+                let rt = tokio::runtime::Runtime::new().expect("failed to create tokio runtime");
                 let this = Arc::new(self.clone());
 
                 rt.block_on(async {
@@ -109,7 +112,7 @@ impl Almanac {
                                     .into_par_iter()
                                     .map(|s| that.seed_to_location(s))
                                     .min()
-                                    .unwrap()
+                                    .unwrap_or(usize::MAX)
                             })
                         })
                         .collect::<FuturesUnordered<_>>();
@@ -117,6 +120,9 @@ impl Almanac {
                     // wait for all futures to finish
                     let mut min = usize::MAX;
                     while let Some(completed) = tasks.next().await {
+                        // if we fail to execute the future, we have reached some degenerate case
+                        // and have to abort as we can't trust our answer
+                        #[allow(clippy::expect_used)]
                         let result = completed.expect("execution failure");
                         if result < min {
                             min = result

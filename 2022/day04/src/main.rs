@@ -16,7 +16,7 @@ use aoc_solution::AocSolutionSolver;
 use common::helpers::root_path;
 use day04_2022::Day04;
 
-#[cfg(not(tarpaulin))]
+#[cfg(not(tarpaulin_include))]
 fn main() {
     Day04::try_solve_from_file(root_path("inputs/2022/day04"))
 }
