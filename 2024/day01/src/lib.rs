@@ -13,14 +13,14 @@
 // limitations under the License.
 
 use crate::common::LocationLists;
+use ::common::parsing::FromStrParser;
 use aoc_solution::Aoc;
-use common::LocationListsParser;
 
 mod common;
 
 #[derive(Aoc)]
 #[aoc(input = LocationLists)]
-#[aoc(parser = LocationListsParser)]
+#[aoc(parser = FromStrParser)]
 #[aoc(part1(output = usize, runner = part1))]
 #[aoc(part2(output = usize, runner = part2))]
 pub struct Day01;
@@ -37,11 +37,10 @@ pub fn part2(input: LocationLists) -> usize {
 #[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
-    use crate::common::LocationListsParser;
     use aoc_solution::parser::AocInputParser;
 
     fn sample_input() -> LocationLists {
-        LocationListsParser::parse_input(
+        FromStrParser::parse_input(
             r#"3   4
 4   3
 2   5

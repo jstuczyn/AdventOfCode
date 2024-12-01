@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use aoc_solution::parser::AocInputParser;
 use common::parsing::parse_input_lines;
 use nom::character::complete::{digit1, multispace1};
 use nom::combinator::map_res;
@@ -58,6 +57,15 @@ impl LocationLists {
     }
 }
 
+impl FromStr for LocationLists {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let rows: Vec<Row> = parse_input_lines(s)?;
+        Ok(rows.into())
+    }
+}
+
 pub struct LocationListsIterator {
     location_lists: LocationLists,
 }
@@ -92,17 +100,6 @@ impl From<Vec<Row>> for LocationLists {
             right.push(raw.right);
         }
         LocationLists { left, right }
-    }
-}
-
-pub struct LocationListsParser;
-
-impl AocInputParser for LocationListsParser {
-    type Output = LocationLists;
-
-    fn parse_input(raw: &str) -> anyhow::Result<Self::Output> {
-        let rows: Vec<Row> = parse_input_lines(raw)?;
-        Ok(rows.into())
     }
 }
 
