@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use aoc_common::parsing::FromStrParser;
 use aoc_solution::Aoc;
-use common::parsing::FromStrParser;
 use types::EngineSchematic;
 
 pub(crate) mod helpers;

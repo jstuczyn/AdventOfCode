@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use anyhow::{anyhow, bail};
-use common::parsing::split_to_string_groups;
+use aoc_common::parsing::split_to_string_groups;
 use futures::stream::FuturesUnordered;
 use futures::StreamExt;
 use itertools::Itertools;

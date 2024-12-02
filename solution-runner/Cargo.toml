@@ -9,7 +9,7 @@ edition = "2021"
 clap = { workspace = true, features = ["derive"] }
 
 aoc-solution = { path = "../aoc-solution" }
-common = { path = "../common" }
+aoc-common = { path = "../common" }
 
 day01_2022 = { path = "../2022/day01" }
 day02_2022 = { path = "../2022/day02" }
@@ -27,3 +27,4 @@ day03_2023 = { path = "../2023/day03" }
 day04_2023 = { path = "../2023/day04" }
 day05_2023 = { path = "../2023/day05" }
 day01_2024 = { path = "../2024/day01" }
+day02_2024 = { path = "../2024/day02" }

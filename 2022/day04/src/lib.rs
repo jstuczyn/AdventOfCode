@@ -13,8 +13,8 @@
 // limitations under the License.
 
 use crate::types::AssignmentPair;
+use aoc_common::parsing::LineParser;
 use aoc_solution::Aoc;
-use common::parsing::LineParser;
 
 mod types;
 

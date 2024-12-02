@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use aoc_solution::AocSolutionSolver;
-use common::helpers::root_path;
+use aoc_common::helpers::root_path;
 use day{{day}}_{{year}}::Day{{day}};
 
 #[cfg(not(tarpaulin_include))]

@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Jedrzej Stuczynski
+// Copyright 2024 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use aoc_common::define_aoc_benchmark;
-use day07_2022::Day07;
+use nom::character::complete::digit1;
+use nom::combinator::map_res;
+use nom::IResult;
+use std::str::FromStr;
 
-define_aoc_benchmark!("inputs/2022/day07", Day07);
+pub fn parse_number<T: FromStr>(input: &str) -> IResult<&str, T> {
+    map_res(digit1, str::parse)(input)
+}

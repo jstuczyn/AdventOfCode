@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use aoc_common::helpers::root_path;
 use aoc_solution::AocSolutionSolver;
-use common::helpers::root_path;
 use day07_2022::Day07;
 
 #[cfg(not(tarpaulin_include))]

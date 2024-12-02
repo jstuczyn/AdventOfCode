@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::parsing::parse_input_lines;
-use nom::character::complete::{digit1, multispace1};
-use nom::combinator::map_res;
+use aoc_common::parsing::combinators::parse_number;
+use aoc_common::parsing::parse_input_lines;
+use nom::character::complete::multispace1;
 use nom::error::Error;
 use nom::sequence::separated_pair;
-use nom::{Finish, IResult};
+use nom::Finish;
 use std::collections::HashMap;
 use std::str::FromStr;
 
@@ -121,11 +121,6 @@ impl FromStr for Row {
     type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        fn parse_number<T: FromStr>(input: &str) -> IResult<&str, T> {
-            map_res(digit1, str::parse)(input)
-        }
-
-        // TODO: as I start using `nom`, I should probably move common parsers into the common lib
         let (_, (left, right)) = separated_pair(parse_number, multispace1, parse_number)(s)
             .finish()
             .map_err(|err| Error::new(err.input.to_string(), err.code))?;

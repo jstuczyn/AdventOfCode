@@ -1,18 +1,20 @@
 [package]
-name = "day06_2022"
+name = "day02_2024"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
-name = "day06_2022"
+name = "day02_2024"
 path = "src/lib.rs"
 
 [dependencies]
 aoc-solution = { path = "../../aoc-solution" }
 aoc-common = { path = "../../common" }
 anyhow = { workspace = true }
+nom = { workspace = true }
+itertools = { workspace = true }
 
 [dev-dependencies]
 criterion = { workspace = true }

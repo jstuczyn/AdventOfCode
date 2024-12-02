@@ -13,8 +13,8 @@
 // limitations under the License.
 
 use crate::types::Forest;
+use aoc_common::parsing::FromStrParser;
 use aoc_solution::Aoc;
-use common::parsing::FromStrParser;
 
 mod types;
 

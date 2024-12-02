@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Jedrzej Stuczynski
+// Copyright 2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,6 +13,6 @@
 // limitations under the License.
 
 use aoc_common::define_aoc_benchmark;
-use day07_2022::Day07;
+use day02_2024::Day02;
 
-define_aoc_benchmark!("inputs/2022/day07", Day07);
+define_aoc_benchmark!("inputs/2024/day02", Day02);
