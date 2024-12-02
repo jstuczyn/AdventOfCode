@@ -17,8 +17,8 @@ macro_rules! define_aoc_benchmark {
     ($input: literal, $typ: ty) => {
         use ::aoc_solution::AocSolution;
 
-        use common::helpers::root_path;
-        use common::input_read::read_input;
+        use aoc_common::helpers::root_path;
+        use aoc_common::input_read::read_input;
         use criterion::{black_box, criterion_group, criterion_main, BatchSize, Criterion};
         use std::fs;
 

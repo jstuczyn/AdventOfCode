@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::parsing::parse_input_lines;
+use aoc_common::parsing::parse_input_lines;
 use std::str::FromStr;
 
 #[derive(Debug, Clone)]

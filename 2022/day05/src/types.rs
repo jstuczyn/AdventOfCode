@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use anyhow::{anyhow, bail};
-use common::parsing::{parse_input_lines, split_to_string_groups};
+use aoc_common::parsing::{parse_input_lines, split_to_string_groups};
 use std::collections::VecDeque;
 use std::str::FromStr;
 

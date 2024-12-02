@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::define_aoc_benchmark;
+use aoc_common::define_aoc_benchmark;
 use day04_2023::Day04;
 
 define_aoc_benchmark!("inputs/2023/day04", Day04);

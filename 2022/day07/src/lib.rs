@@ -13,8 +13,8 @@
 // limitations under the License.
 
 use crate::types::FileSystem;
+use aoc_common::parsing::FromStrParser;
 use aoc_solution::Aoc;
-use common::parsing::FromStrParser;
 
 mod types;
 

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 use crate::types::{Cpu, Crt};
+use aoc_common::parsing::LineParser;
 use aoc_solution::Aoc;
-use common::parsing::LineParser;
 use types::Instruction;
 
 mod types;

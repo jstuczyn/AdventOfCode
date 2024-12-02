@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use common::define_aoc_benchmark;
+use aoc_common::define_aoc_benchmark;
 use day{{day}}_{{year}}::Day{{day}};
 
 define_aoc_benchmark!("inputs/{{year}}/day{{day}}", Day{{day}});

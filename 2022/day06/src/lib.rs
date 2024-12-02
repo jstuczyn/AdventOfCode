@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use aoc_common::parsing::CharVecParser;
 use aoc_solution::Aoc;
-use common::parsing::CharVecParser;
 
 #[derive(Aoc)]
 #[aoc(input = Vec<char>)]

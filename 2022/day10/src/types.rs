@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use anyhow::bail;
-use common::types::Pixel;
+use aoc_common::types::Pixel;
 use std::iter::once;
 use std::str::FromStr;
 

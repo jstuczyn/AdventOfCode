@@ -13,8 +13,8 @@
 // limitations under the License.
 
 use crate::types::Elf;
+use aoc_common::parsing::GroupsParser;
 use aoc_solution::Aoc;
-use common::parsing::GroupsParser;
 
 mod types;
 

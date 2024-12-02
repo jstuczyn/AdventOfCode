@@ -13,8 +13,8 @@
 // limitations under the License.
 
 use crate::types::{Monkey, State, WorryDecrease};
+use aoc_common::parsing::GroupsParser;
 use aoc_solution::Aoc;
-use common::parsing::GroupsParser;
 use num::integer::lcm;
 
 mod types;
@@ -42,7 +42,7 @@ pub fn part2(input: Vec<Monkey>) -> usize {
 mod tests {
     use super::*;
     use crate::types::Monkey;
-    use common::parsing::parse_groups;
+    use aoc_common::parsing::parse_groups;
 
     fn sample_input() -> Vec<Monkey> {
         let raw = r#"Monkey 0:

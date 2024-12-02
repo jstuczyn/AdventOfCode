@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use anyhow::anyhow;
-use common::parsing::parse_input_lines;
+use aoc_common::parsing::parse_input_lines;
 use std::str::FromStr;
 
 type Height = usize;

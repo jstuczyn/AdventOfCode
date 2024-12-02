@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+extern crate core;
+
 use crate::common::LocationLists;
-use ::common::parsing::FromStrParser;
+use aoc_common::parsing::FromStrParser;
 use aoc_solution::Aoc;
 
 mod common;

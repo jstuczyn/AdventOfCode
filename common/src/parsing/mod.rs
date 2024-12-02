@@ -20,6 +20,7 @@ use std::ops::RangeInclusive;
 use std::str::FromStr;
 
 pub use impls::*;
+pub mod combinators;
 pub mod impls;
 
 /// Uses the underlying FromStr impl of T
