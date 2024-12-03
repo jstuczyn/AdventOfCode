@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use nom::character::complete::digit1;
-use nom::combinator::map_res;
-use nom::IResult;
 use std::str::FromStr;
+use winnow::ascii::digit1;
+use winnow::PResult;
+use winnow::Parser;
 
-pub fn parse_number<T: FromStr>(input: &str) -> IResult<&str, T> {
-    map_res(digit1, str::parse)(input)
+pub fn parse_number<T: FromStr>(input: &mut &str) -> PResult<T> {
+    digit1.parse_to().parse_next(input)
 }
