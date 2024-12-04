@@ -12,39 +12,50 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::common::MulInstruction;
+use crate::common::MulInstructionParser;
 use aoc_solution::Aoc;
 
 mod common;
 
 #[derive(Aoc)]
+#[aoc(input = Vec<MulInstruction>)]
+#[aoc(parser = MulInstructionParser)]
+#[aoc(part1(output = usize, runner = part1))]
+#[aoc(part2(output = usize, runner = part2))]
 pub struct Day03;
 
-pub fn part1(input: ()) -> ! {
-    panic!("unimplemented")
+pub fn part1(input: Vec<MulInstruction>) -> usize {
+    input.into_iter().map(|i| i.execute()).sum()
 }
 
-pub fn part2(input: ()) -> ! {
-    panic!("unimplemented")
+pub fn part2(_input: Vec<MulInstruction>) -> usize {
+    0
 }
 
 #[cfg(test)]
 #[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
+    use crate::common::MulInstruction;
+    use aoc_solution::parser::AocInputParser;
 
-    fn sample_input() -> ! {
-        todo!()
+    fn sample_input() -> Vec<MulInstruction> {
+        MulInstructionParser::parse_input(
+            r#"xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"#,
+        )
+        .unwrap()
     }
 
     #[test]
     fn part1_sample_input() {
-        let expected = ();
+        let expected = 161;
         assert_eq!(expected, part1(sample_input()))
     }
 
     #[test]
     fn part2_sample_input() {
-        let expected = ();
+        let expected = 0;
         assert_eq!(expected, part2(sample_input()))
     }
 }
