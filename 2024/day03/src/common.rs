@@ -14,10 +14,16 @@
 
 use aoc_common::parsing::combinators::parse_number;
 use aoc_solution::parser::AocInputParser;
-use std::str::FromStr;
 use winnow::combinator::{alt, delimited, iterator, separated_pair};
 use winnow::token::any;
 use winnow::{PResult, Parser};
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Instruction {
+    Mul(MulInstruction),
+    Do,
+    Dont,
+}
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct MulInstruction(usize, usize);
@@ -34,24 +40,22 @@ fn mul_parser(input: &mut &str) -> PResult<MulInstruction> {
         .parse_next(input)
 }
 
-impl FromStr for MulInstruction {
-    type Err = anyhow::Error;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mul = mul_parser
-            .parse(s)
-            .map_err(|err| anyhow::format_err!("{err}"))?;
-        Ok(mul)
-    }
+fn instruction_parser(input: &mut &str) -> PResult<Instruction> {
+    alt((
+        mul_parser.map(Instruction::Mul),
+        "don't".value(Instruction::Dont),
+        "do".value(Instruction::Do),
+    ))
+    .parse_next(input)
 }
 
-pub(crate) struct MulInstructionParser;
+pub(crate) struct InstructionsParser;
 
-impl AocInputParser for MulInstructionParser {
-    type Output = Vec<MulInstruction>;
+impl AocInputParser for InstructionsParser {
+    type Output = Vec<Instruction>;
 
     fn parse_input(raw: &str) -> anyhow::Result<Self::Output> {
-        let mut it = iterator(raw, alt((mul_parser.map(Some), any.value(None))));
+        let mut it = iterator(raw, alt((instruction_parser.map(Some), any.value(None))));
         let parsed = it.flatten().collect::<Vec<_>>();
         it.finish().map_err(|err| anyhow::format_err!("{err}"))?;
         Ok(parsed)
@@ -65,13 +69,10 @@ mod tests {
 
     #[test]
     fn mul_parsing() {
-        assert_eq!(
-            "mul(5,5)".parse::<MulInstruction>().unwrap(),
-            MulInstruction(5, 5)
-        );
+        assert_eq!(mul_parser(&mut "mul(5,5)").unwrap(), MulInstruction(5, 5));
 
         assert_eq!(
-            "mul(42,69)".parse::<MulInstruction>().unwrap(),
+            mul_parser(&mut "mul(42,69)").unwrap(),
             MulInstruction(42, 69)
         );
     }
