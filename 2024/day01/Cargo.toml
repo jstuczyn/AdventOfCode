@@ -13,7 +13,7 @@ path = "src/lib.rs"
 aoc-solution = { path = "../../aoc-solution" }
 aoc-common = { path = "../../common" }
 anyhow = { workspace = true }
-nom = { workspace = true }
+winnow = { workspace = true }
 
 [dev-dependencies]
 criterion = { workspace = true }

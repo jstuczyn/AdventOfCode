@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 anyhow = { workspace = true }
 aoc-solution = { path = "../aoc-solution" }
-nom = { workspace = true }
+winnow = { workspace = true }

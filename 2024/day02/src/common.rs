@@ -14,11 +14,10 @@
 
 use aoc_common::parsing::combinators::parse_number;
 use itertools::Itertools;
-use nom::character::complete::multispace1;
-use nom::error::Error;
-use nom::multi::separated_list1;
-use nom::Finish;
 use std::str::FromStr;
+use winnow::ascii::multispace1;
+use winnow::combinator::separated;
+use winnow::Parser;
 
 #[derive(Debug, Clone)]
 pub struct Report {
@@ -81,9 +80,9 @@ impl FromStr for Report {
     type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let (_, levels) = separated_list1(multispace1, parse_number)(s)
-            .finish()
-            .map_err(|err| Error::new(err.input.to_string(), err.code))?;
+        let levels = separated(1.., parse_number::<u8>, multispace1)
+            .parse(s)
+            .map_err(|err| anyhow::format_err!("{err}"))?;
 
         Ok(Report { levels })
     }
