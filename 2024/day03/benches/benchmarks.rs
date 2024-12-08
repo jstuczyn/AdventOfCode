@@ -1,4 +1,4 @@
-// Copyright 2024 Jedrzej Stuczynski
+// Copyright 2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::str::FromStr;
-use winnow::ascii::digit1;
-use winnow::PResult;
-use winnow::Parser;
+use aoc_common::define_aoc_benchmark;
+use day03_2024::Day03;
 
-pub fn parse_number<T: FromStr>(input: &mut &str) -> PResult<T> {
-    digit1.parse_to().parse_next(input)
-}
+define_aoc_benchmark!("inputs/2024/day03", Day03);

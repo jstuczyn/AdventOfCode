@@ -14,12 +14,11 @@
 
 use aoc_common::parsing::combinators::parse_number;
 use aoc_common::parsing::parse_input_lines;
-use nom::character::complete::multispace1;
-use nom::error::Error;
-use nom::sequence::separated_pair;
-use nom::Finish;
 use std::collections::HashMap;
 use std::str::FromStr;
+use winnow::ascii::multispace1;
+use winnow::combinator::separated_pair;
+use winnow::Parser;
 
 #[derive(Debug, Clone)]
 pub struct LocationLists {
@@ -121,9 +120,9 @@ impl FromStr for Row {
     type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let (_, (left, right)) = separated_pair(parse_number, multispace1, parse_number)(s)
-            .finish()
-            .map_err(|err| Error::new(err.input.to_string(), err.code))?;
+        let (left, right) = separated_pair(parse_number, multispace1, parse_number)
+            .parse(s)
+            .map_err(|err| anyhow::format_err!("{err}"))?;
 
         Ok(Row { left, right })
     }

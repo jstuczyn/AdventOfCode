@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::str::FromStr;
-use winnow::ascii::digit1;
-use winnow::PResult;
-use winnow::Parser;
+use aoc_common::helpers::root_path;
+use aoc_solution::AocSolutionSolver;
+use day03_2024::Day03;
 
-pub fn parse_number<T: FromStr>(input: &mut &str) -> PResult<T> {
-    digit1.parse_to().parse_next(input)
+#[cfg(not(tarpaulin_include))]
+fn main() {
+    Day03::try_solve_from_file(root_path("inputs/2024/day03"))
 }
