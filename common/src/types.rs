@@ -15,6 +15,7 @@
 use crate::constants::{EMPTY_PIXEL, FILLED_PIXEL};
 use anyhow::bail;
 use std::fmt::{Display, Formatter};
+use std::ops::Add;
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Default)]
 pub enum Pixel {
@@ -68,5 +69,115 @@ impl From<Pixel> for char {
 impl Pixel {
     pub fn is_active(&self) -> bool {
         matches!(self, Pixel::Active)
+    }
+}
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Default, Hash)]
+pub struct Position {
+    pub x: isize,
+    pub y: isize,
+}
+
+impl Add<(isize, isize)> for Position {
+    type Output = Position;
+
+    fn add(self, (dx, dy): (isize, isize)) -> Self::Output {
+        Position {
+            x: self.x + dx,
+            y: self.y + dy,
+        }
+    }
+}
+
+impl From<(usize, usize)> for Position {
+    fn from((x, y): (usize, usize)) -> Self {
+        Position {
+            x: x as isize,
+            y: y as isize,
+        }
+    }
+}
+
+impl From<Position> for (isize, isize) {
+    fn from(pos: Position) -> Self {
+        (pos.x, pos.y)
+    }
+}
+
+impl Position {
+    pub const fn next_horizontal(&self) -> Position {
+        Position {
+            x: self.x + 1,
+            y: self.y,
+        }
+    }
+
+    pub const fn previous_horizontal(&self) -> Position {
+        Position {
+            x: self.x - 1,
+            y: self.y,
+        }
+    }
+
+    pub const fn next_vertical(&self) -> Position {
+        Position {
+            x: self.x,
+            y: self.y + 1,
+        }
+    }
+
+    pub const fn previous_vertical(&self) -> Position {
+        Position {
+            x: self.x,
+            y: self.y - 1,
+        }
+    }
+
+    #[inline]
+    pub const fn adjacent(&self) -> [Position; 8] {
+        [
+            Position {
+                x: self.x,
+                y: self.y + 1,
+            },
+            Position {
+                x: self.x + 1,
+                y: self.y + 1,
+            },
+            Position {
+                x: self.x + 1,
+                y: self.y,
+            },
+            Position {
+                x: self.x + 1,
+                y: self.y - 1,
+            },
+            Position {
+                x: self.x,
+                y: self.y - 1,
+            },
+            Position {
+                x: self.x - 1,
+                y: self.y - 1,
+            },
+            Position {
+                x: self.x - 1,
+                y: self.y,
+            },
+            Position {
+                x: self.x - 1,
+                y: self.y + 1,
+            },
+        ]
+    }
+
+    #[inline]
+    pub const fn is_in_quadrant1(&self) -> bool {
+        self.x >= 0 && self.y >= 0
+    }
+
+    // for tasks operating in Q1
+    pub fn quadrant1_adjacent(&self) -> impl Iterator<Item = Position> {
+        self.adjacent().into_iter().filter(|a| a.is_in_quadrant1())
     }
 }
