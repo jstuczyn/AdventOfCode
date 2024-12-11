@@ -37,6 +37,10 @@ impl PrintingRules {
         };
 
         for next in after {
+            if next == &page {
+                continue;
+            }
+
             if !rules.contains(next) {
                 return false;
             }
@@ -55,8 +59,30 @@ impl PrintingRules {
     }
 
     pub fn fix_update(&self, update: &PrintingUpdate) -> PrintingUpdate {
-        todo!()
-        //
+        let mut fixed = Vec::with_capacity(update.pages_to_produce.len());
+
+        let mut pages_to_insert = update.pages_to_produce.clone();
+        // first page is the one that comes before **all** remaining ones (there can only be one)
+        // second page includes all but the first, etc...
+        // is this the most efficient? lol, no, insertion sort is one of the worst ones,
+        // but given the size of the input, it's a perfectly valid solution to this problem
+        while !pages_to_insert.is_empty() {
+            if pages_to_insert.len() == 1 {
+                fixed.push(pages_to_insert[0]);
+                break;
+            }
+            for (i, page) in pages_to_insert.iter().enumerate() {
+                if self.can_be_printed_before(*page, &pages_to_insert) {
+                    fixed.push(*page);
+                    pages_to_insert.remove(i);
+                    break;
+                }
+            }
+        }
+
+        PrintingUpdate {
+            pages_to_produce: fixed,
+        }
     }
 
     pub fn updates(&self) -> &[PrintingUpdate] {
