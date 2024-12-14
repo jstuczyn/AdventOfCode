@@ -52,7 +52,6 @@ pub fn part2(input: WordGrid) -> usize {
 }
 
 #[cfg(test)]
-#[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
     use aoc_solution::parser::AocInputParser;

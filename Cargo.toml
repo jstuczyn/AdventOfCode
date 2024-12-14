@@ -7,6 +7,63 @@ members = [
     "solution-runner",
     "common",
     "tools/aoc-init",
+    "2019/day01",
+    "2019/day02",
+    "2019/day03",
+    "2019/day04",
+    "2019/day05",
+    "2019/day06",
+    "2019/day07",
+    "2019/day08",
+    "2019/day09",
+    "2020/day01",
+    "2020/day02",
+    "2020/day03",
+    "2020/day04",
+    "2020/day05",
+    "2020/day06",
+    "2020/day07",
+    "2020/day08",
+    "2020/day09",
+    "2020/day10",
+    "2020/day11",
+    "2020/day12",
+    "2020/day13",
+    "2020/day14",
+    "2020/day15",
+    "2020/day16",
+    "2020/day17",
+    "2020/day18",
+    "2020/day19",
+    "2020/day20",
+    "2020/day21",
+    "2020/day22",
+    "2020/day23",
+    "2020/day24",
+    "2020/day25",
+    "2021/day01",
+    "2021/day02",
+    "2021/day03",
+    "2021/day04",
+    "2021/day05",
+    "2021/day06",
+    "2021/day07",
+    "2021/day08",
+    "2021/day09",
+    "2021/day10",
+    "2021/day11",
+    "2021/day12",
+    "2021/day13",
+    "2021/day14",
+    "2021/day15",
+    "2021/day16",
+    "2021/day17",
+    "2021/day18",
+    "2021/day19",
+    "2021/day20",
+    "2021/day21",
+    "2021/day22",
+    "2021/day24",
     "2022/day01",
     "2022/day02",
     "2022/day03",
@@ -29,17 +86,28 @@ members = [
     "2024/day05"
 ]
 
+[workspace.package]
+authors = ["jstuczyn <jedrzej.stuczynski@gmail.com>"]
+repository = "https://github.com/jstuczyn/AdventOfCode"
+edition = "2021"
+license = "Apache-2.0"
+rust-version = "1.80"
+readme = "README.md"
+
 [workspace.dependencies]
 anyhow = "1.0.93"
+bitvec = "1.0.1"
 cargo-edit = "0.13.0"
 cargo-generate = "0.22.0"
 cfg-if = "1.0.0"
 clap = "4.5.21"
 criterion = "0.5.1"
 futures = "0.3.31"
+hex = "0.4.3"
 humantime = "2.1.0"
 itertools = "0.13.0"
 num = "0.4.3"
+pathfinding = "4.12.0"
 rayon = "1.10.0"
 reqwest = "0.12.9"
 tokio = "1.41.1"

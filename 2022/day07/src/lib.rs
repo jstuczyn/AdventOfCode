@@ -34,7 +34,6 @@ pub fn part2(input: FileSystem) -> usize {
 }
 
 #[cfg(test)]
-#[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
     use crate::types::FileSystem;

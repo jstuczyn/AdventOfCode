@@ -18,3 +18,7 @@ pub mod helpers;
 pub mod input_read;
 pub mod parsing;
 pub mod types;
+
+// to help with import of 2019-2021 solutions;
+// eventually they will be properly migrated to current framework
+pub mod legacy;

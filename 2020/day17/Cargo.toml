@@ -1,0 +1,24 @@
+[package]
+name = "day17_2020"
+version = "0.1.0"
+authors.workspace = true
+repository.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+readme.workspace = true
+
+[lib]
+name = "day17_2020"
+path = "src/lib.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+aoc-solution = { path = "../../aoc-solution" }
+aoc-common = { path = "../../common" }
+anyhow = { workspace = true }
+rayon = { workspace = true }
+
+[lints]
+workspace = true

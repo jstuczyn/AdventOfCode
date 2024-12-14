@@ -186,6 +186,7 @@ fn try_get_input(args: &Args, root: &Path) -> anyhow::Result<()> {
     let mut file = fs::File::create(input_file)?;
 
     let Ok(session_cookie) = env::var("AOC_SESSION") else {
+        eprintln!("could not find a valid AOC_SESSION cookie");
         return Ok(());
     };
 

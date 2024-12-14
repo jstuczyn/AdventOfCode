@@ -56,7 +56,6 @@ pub fn part2(input: Vec<Instruction>) -> usize {
 }
 
 #[cfg(test)]
-#[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
     use crate::common::Instruction;
