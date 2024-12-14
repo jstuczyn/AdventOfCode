@@ -16,6 +16,16 @@ clap = { workspace = true, features = ["derive"] }
 aoc-solution = { path = "../aoc-solution" }
 aoc-common = { path = "../common" }
 
+day01_2019 = { path = "../2019/day01" }
+day02_2019 = { path = "../2019/day02" }
+day03_2019 = { path = "../2019/day03" }
+day04_2019 = { path = "../2019/day04" }
+day05_2019 = { path = "../2019/day05" }
+day06_2019 = { path = "../2019/day06" }
+day07_2019 = { path = "../2019/day07" }
+day08_2019 = { path = "../2019/day08" }
+day09_2019 = { path = "../2019/day09" }
+
 
 day01_2020 = { path = "../2020/day01" }
 day02_2020 = { path = "../2020/day02" }
