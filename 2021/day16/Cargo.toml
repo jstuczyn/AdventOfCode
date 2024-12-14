@@ -1,7 +1,12 @@
 [package]
 name = "day16_2021"
 version = "0.1.0"
-edition = "2021"
+authors.workspace = true
+repository.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+readme.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

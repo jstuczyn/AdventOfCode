@@ -17,5 +17,10 @@ use day02_2021::{part1, part2};
 
 #[cfg(not(tarpaulin_include))]
 fn main() {
-    execute_vec("input", input_read::read_parsed_line_input, part1, part2)
+    execute_vec(
+        "inputs/2021/day02",
+        input_read::read_parsed_line_input,
+        part1,
+        part2,
+    )
 }

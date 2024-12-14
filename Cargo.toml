@@ -7,6 +7,31 @@ members = [
     "solution-runner",
     "common",
     "tools/aoc-init",
+    "2020/day01",
+    "2020/day02",
+    "2020/day03",
+    "2020/day04",
+    "2020/day05",
+    "2020/day06",
+    "2020/day07",
+    "2020/day08",
+    "2020/day09",
+    "2020/day10",
+    "2020/day11",
+    "2020/day12",
+    "2020/day13",
+    "2020/day14",
+    "2020/day15",
+    "2020/day16",
+    "2020/day17",
+    "2020/day18",
+    "2020/day19",
+    "2020/day20",
+    "2020/day21",
+    "2020/day22",
+    "2020/day23",
+    "2020/day24",
+    "2020/day25",
     "2021/day01",
     "2021/day02",
     "2021/day03",
@@ -51,6 +76,14 @@ members = [
     "2024/day04",
     "2024/day05"
 ]
+
+[workspace.package]
+authors = ["jstuczyn <jedrzej.stuczynski@gmail.com>"]
+repository = "https://github.com/jstuczyn/AdventOfCode"
+edition = "2021"
+license = "Apache-2.0"
+rust-version = "1.80"
+readme = "README.md"
 
 [workspace.dependencies]
 anyhow = "1.0.93"

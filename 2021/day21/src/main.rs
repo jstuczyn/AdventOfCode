@@ -18,5 +18,5 @@ use day21_2021::{part1, part2};
 
 #[cfg(not(tarpaulin_include))]
 fn main() {
-    execute_struct("input", read_parsed, part1, part2)
+    execute_struct("inputs/2021/day21", read_parsed, part1, part2)
 }
