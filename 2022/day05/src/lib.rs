@@ -36,7 +36,6 @@ pub fn part2(mut input: Supplies) -> String {
 }
 
 #[cfg(test)]
-#[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
 

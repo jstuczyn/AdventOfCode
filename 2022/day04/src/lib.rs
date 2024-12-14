@@ -40,7 +40,6 @@ pub fn part2(input: Vec<AssignmentPair>) -> usize {
 }
 
 #[cfg(test)]
-#[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
 

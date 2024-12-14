@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// legacy code
+#![allow(clippy::unwrap_used)]
+#![allow(clippy::expect_used)]
+
 pub(crate) fn digits(num: u32) -> usize {
     // yes, yes, we could have used a more generic solution with a log10 or iterators, like with
     // `iterate(n, |&n| n / 10).take_while(|&n| n > 0).count().max(1)`
@@ -31,7 +35,6 @@ pub(crate) fn digits(num: u32) -> usize {
 pub(crate) fn digits_to_number(digits: Vec<char>) -> u32 {
     const RADIX: u32 = 10;
     // SAFETY: 10 is a valid radix value
-    #[allow(clippy::unwrap_used)]
     digits
         .into_iter()
         .map(|c| c.to_digit(RADIX).unwrap())

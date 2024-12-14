@@ -28,7 +28,6 @@ pub fn part2(input: ()) -> ! {
 }
 
 #[cfg(test)]
-#[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
 

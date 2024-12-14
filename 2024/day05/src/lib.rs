@@ -44,7 +44,6 @@ pub fn part2(input: PrintingRules) -> usize {
 }
 
 #[cfg(test)]
-#[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
 

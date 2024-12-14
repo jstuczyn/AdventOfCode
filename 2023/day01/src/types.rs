@@ -33,8 +33,7 @@ pub fn try_from_ascii_digits(s: &str) -> usize {
     // ))?;
     //
     // // safety: the unwraps here are fine as we've just verified the extracted characters MUST BE ascii digits
-    // #[allow(clippy::unwrap_used)]
-    // Ok(first.to_digit(10).unwrap() * 10 + last.to_digit(10).unwrap())
+    //     // Ok(first.to_digit(10).unwrap() * 10 + last.to_digit(10).unwrap())
     //
     // but for the first days we care about, as Jeremy Clarkson would say, "SPEEEEEED"
     let bytes = s.as_bytes();

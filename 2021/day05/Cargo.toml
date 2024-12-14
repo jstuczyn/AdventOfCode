@@ -1,0 +1,18 @@
+[package]
+name = "day05_2021"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "day05_2021"
+path = "src/lib.rs"
+
+[dependencies]
+anyhow = { workspace = true }
+aoc-solution = { path = "../../aoc-solution" }
+aoc-common = { path = "../../common" }
+
+[lints]
+workspace = true

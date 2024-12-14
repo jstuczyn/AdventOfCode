@@ -11,6 +11,32 @@ clap = { workspace = true, features = ["derive"] }
 aoc-solution = { path = "../aoc-solution" }
 aoc-common = { path = "../common" }
 
+
+day01_2021 = { path = "../2021/day01" }
+day02_2021 = { path = "../2021/day02" }
+day03_2021 = { path = "../2021/day03" }
+day04_2021 = { path = "../2021/day04" }
+day05_2021 = { path = "../2021/day05" }
+day06_2021 = { path = "../2021/day06" }
+day07_2021 = { path = "../2021/day07" }
+day08_2021 = { path = "../2021/day08" }
+day09_2021 = { path = "../2021/day09" }
+day10_2021 = { path = "../2021/day10" }
+day11_2021 = { path = "../2021/day11" }
+day12_2021 = { path = "../2021/day12" }
+day13_2021 = { path = "../2021/day13" }
+day14_2021 = { path = "../2021/day14" }
+day15_2021 = { path = "../2021/day15" }
+day16_2021 = { path = "../2021/day16" }
+day17_2021 = { path = "../2021/day17" }
+day18_2021 = { path = "../2021/day18" }
+day19_2021 = { path = "../2021/day19" }
+day20_2021 = { path = "../2021/day20" }
+day21_2021 = { path = "../2021/day21" }
+day22_2021 = { path = "../2021/day22" }
+day24_2021 = { path = "../2021/day24" }
+
+
 day01_2022 = { path = "../2022/day01" }
 day02_2022 = { path = "../2022/day02" }
 day03_2022 = { path = "../2022/day03" }
@@ -19,13 +45,17 @@ day05_2022 = { path = "../2022/day05" }
 day06_2022 = { path = "../2022/day06" }
 day07_2022 = { path = "../2022/day07" }
 day08_2022 = { path = "../2022/day08" }
-day11_2022 = { path = "../2022/day11" }
 day10_2022 = { path = "../2022/day10" }
+day11_2022 = { path = "../2022/day11" }
+
+
 day01_2023 = { path = "../2023/day01" }
 day02_2023 = { path = "../2023/day02" }
 day03_2023 = { path = "../2023/day03" }
 day04_2023 = { path = "../2023/day04" }
 day05_2023 = { path = "../2023/day05" }
+
+
 day01_2024 = { path = "../2024/day01" }
 day02_2024 = { path = "../2024/day02" }
 day03_2024 = { path = "../2024/day03" }

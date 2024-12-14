@@ -34,7 +34,6 @@ pub fn part2(input: Vec<RPSGame>) -> usize {
 }
 
 #[cfg(test)]
-#[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
 
