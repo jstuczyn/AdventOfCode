@@ -15,7 +15,7 @@
 use crate::constants::{EMPTY_PIXEL, FILLED_PIXEL};
 use anyhow::bail;
 use std::fmt::{Display, Formatter};
-use std::ops::Add;
+use std::ops::{Add, AddAssign};
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Default)]
 pub enum Pixel {
@@ -78,6 +78,12 @@ pub struct Position {
     pub y: isize,
 }
 
+impl Display for Position {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
 impl Add<(isize, isize)> for Position {
     type Output = Position;
 
@@ -86,6 +92,13 @@ impl Add<(isize, isize)> for Position {
             x: self.x + dx,
             y: self.y + dy,
         }
+    }
+}
+
+impl AddAssign<(isize, isize)> for Position {
+    fn add_assign(&mut self, (dx, dy): (isize, isize)) {
+        self.x += dx;
+        self.y += dy;
     }
 }
 
@@ -105,6 +118,10 @@ impl From<Position> for (isize, isize) {
 }
 
 impl Position {
+    pub const fn is_origin(&self) -> bool {
+        self.x == 0 && self.y == 0
+    }
+
     pub const fn next_horizontal(&self) -> Position {
         Position {
             x: self.x + 1,
