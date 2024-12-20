@@ -62,6 +62,11 @@ impl Equation {
     // we don't need to know what particular combination allows us to obtain valid result
     // we just need to know if it's possible
     fn check_subset(&self, operators: Operators, index: usize, sub_result: usize) -> bool {
+        if sub_result > self.test_value {
+            // all operators strictly increase the result so it's impossible to reach the final answer
+            return false;
+        }
+
         if self.operands.len() == index {
             return sub_result == self.test_value;
         }
