@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::common::Equation;
+use crate::common::{Equation, P1_OPERATORS, P2_OPERATORS};
 use aoc_common::parsing::LineParser;
 use aoc_solution::Aoc;
 
@@ -28,13 +28,17 @@ pub struct Day07;
 pub fn part1(input: Vec<Equation>) -> usize {
     input
         .into_iter()
-        .filter(|e| e.is_valid())
+        .filter(|e| e.is_valid(P1_OPERATORS))
         .map(|e| e.test_value)
         .sum()
 }
 
 pub fn part2(input: Vec<Equation>) -> usize {
-    0
+    input
+        .into_iter()
+        .filter(|e| e.is_valid(P2_OPERATORS))
+        .map(|e| e.test_value)
+        .sum()
 }
 
 #[cfg(test)]
@@ -65,7 +69,7 @@ mod tests {
 
     #[test]
     fn part2_sample_input() {
-        let expected = 0;
+        let expected = 11387;
         assert_eq!(expected, part2(sample_input()))
     }
 }

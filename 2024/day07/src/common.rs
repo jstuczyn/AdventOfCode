@@ -18,6 +18,15 @@ use winnow::ascii::space1;
 use winnow::combinator::{separated, separated_pair};
 use winnow::{PResult, Parser};
 
+pub type Operators<'a> = &'a [fn(usize, usize) -> usize];
+
+fn concat_operator(a: usize, b: usize) -> usize {
+    format!("{a}{b}").parse().unwrap()
+}
+
+pub(crate) const P1_OPERATORS: Operators = &[|a, b| a + b, |a, b| a * b];
+pub(crate) const P2_OPERATORS: Operators = &[|a, b| a + b, |a, b| a * b, concat_operator];
+
 #[derive(Debug, Clone)]
 pub struct Equation {
     pub test_value: usize,
@@ -27,16 +36,14 @@ pub struct Equation {
 impl Equation {
     // we don't need to know what particular combination allows us to obtain valid result
     // we just need to know if it's possible
-    fn check_subset(&self, index: usize, sub_result: usize) -> bool {
-        let operators = [|a, b| a + b, |a, b| a * b];
-
+    fn check_subset(&self, operators: Operators, index: usize, sub_result: usize) -> bool {
         if self.operands.len() == index {
             return sub_result == self.test_value;
         }
 
         for operator in operators {
             let next = self.operands[index];
-            if self.check_subset(index + 1, operator(sub_result, next)) {
+            if self.check_subset(operators, index + 1, operator(sub_result, next)) {
                 return true;
             }
         }
@@ -44,8 +51,8 @@ impl Equation {
         false
     }
 
-    pub fn is_valid(&self) -> bool {
-        self.check_subset(0, 0)
+    pub fn is_valid(&self, operators: Operators) -> bool {
+        self.check_subset(operators, 0, 0)
     }
 }
 
@@ -82,12 +89,12 @@ mod tests {
             test_value: 190,
             operands: vec![10, 19],
         };
-        assert!(equation.is_valid());
+        assert!(equation.is_valid(P1_OPERATORS));
 
         let equation = Equation {
             test_value: 292,
             operands: vec![11, 6, 16, 20],
         };
-        assert!(equation.is_valid());
+        assert!(equation.is_valid(P1_OPERATORS));
     }
 }
