@@ -20,8 +20,33 @@ use winnow::{PResult, Parser};
 
 pub type Operators<'a> = &'a [fn(usize, usize) -> usize];
 
+#[inline]
+fn to_digits_reversed(mut input: usize) -> Vec<usize> {
+    let mut digits = Vec::new();
+
+    if input == 0 {
+        digits.push(0);
+        return digits;
+    }
+
+    while input > 0 {
+        digits.push(input % 10);
+        input /= 10;
+    }
+
+    digits
+}
+
 fn concat_operator(a: usize, b: usize) -> usize {
-    format!("{a}{b}").parse().unwrap()
+    // converts 12345 into [5,4,3,2,1]
+    let rhs_digits = to_digits_reversed(b);
+
+    let mut res = a * 10usize.pow(rhs_digits.len() as u32);
+    for (i, &digit) in rhs_digits.iter().enumerate() {
+        res += 10usize.pow(i as u32) * digit
+    }
+
+    res
 }
 
 pub(crate) const P1_OPERATORS: Operators = &[|a, b| a + b, |a, b| a * b];
@@ -96,5 +121,12 @@ mod tests {
             operands: vec![11, 6, 16, 20],
         };
         assert!(equation.is_valid(P1_OPERATORS));
+    }
+
+    #[test]
+    fn check_concat_operator() {
+        assert_eq!(12345, concat_operator(12, 345));
+        assert_eq!(12345, concat_operator(1, 2345));
+        assert_eq!(12345, concat_operator(1234, 5));
     }
 }
