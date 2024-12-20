@@ -1,4 +1,4 @@
-// Copyright 2024 Jedrzej Stuczynski
+// Copyright 2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use aoc_common::helpers::root_path;
-use aoc_solution::AocSolutionSolver;
-use day{{day}}_{{year}}::Day{{day}};
+use aoc_common::define_aoc_benchmark;
+use day07_2024::Day07;
 
-#[cfg(not(tarpaulin_include))]
-fn main() {
-    Day{{day}}::try_solve_from_file(root_path("inputs/{{year}}/day{{day}}"))
-}
+define_aoc_benchmark!("inputs/2024/day07", Day07);
