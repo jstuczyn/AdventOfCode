@@ -95,7 +95,7 @@ impl FromStr for AntennaGrid {
 
 #[inline]
 const fn determine_antinode_locations(first: Position, second: Position) -> (Position, Position) {
-    let sep = (second.x - first.x, second.y - first.y);
+    let sep = antinode_vec(first, second);
     (
         Position {
             x: first.x - sep.0,
@@ -108,6 +108,11 @@ const fn determine_antinode_locations(first: Position, second: Position) -> (Pos
     )
 }
 
+#[inline]
+const fn antinode_vec(start: Position, end: Position) -> (isize, isize) {
+    (end.x - start.x, end.y - start.y)
+}
+
 impl AntennaGrid {
     pub fn on_grid(&self, position: Position) -> bool {
         position.x < self.width as isize
@@ -115,19 +120,41 @@ impl AntennaGrid {
             && position.is_in_quadrant1()
     }
 
-    pub fn count_antinodes(&self) -> usize {
+    pub fn count_basic_antinodes(&self) -> usize {
         let mut antinode_locations = HashSet::new();
 
         for antennas in self.antennas.values() {
             for antenna_pair in antennas.iter().combinations(2) {
                 let (an1, an2) = determine_antinode_locations(*antenna_pair[0], *antenna_pair[1]);
                 if self.on_grid(an1) {
-                    println!("{an1}");
                     antinode_locations.insert(an1);
                 }
                 if self.on_grid(an2) {
-                    println!("{an2}");
                     antinode_locations.insert(an2);
+                }
+            }
+        }
+
+        antinode_locations.len()
+    }
+
+    pub fn count_antinodes_with_harmonics(&self) -> usize {
+        let mut antinode_locations = HashSet::new();
+
+        for antennas in self.antennas.values() {
+            for antenna_pair in antennas.iter().combinations(2) {
+                let antinode_vec = antinode_vec(*antenna_pair[0], *antenna_pair[1]);
+                let mut neg_antinode = *antenna_pair[0];
+                let mut pos_antinode = *antenna_pair[1];
+
+                while self.on_grid(neg_antinode) {
+                    antinode_locations.insert(neg_antinode);
+                    neg_antinode -= antinode_vec;
+                }
+
+                while self.on_grid(pos_antinode) {
+                    antinode_locations.insert(pos_antinode);
+                    pos_antinode += antinode_vec;
                 }
             }
         }

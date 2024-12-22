@@ -26,11 +26,11 @@ mod common;
 pub struct Day08;
 
 pub fn part1(input: AntennaGrid) -> usize {
-    input.count_antinodes()
+    input.count_basic_antinodes()
 }
 
 pub fn part2(input: AntennaGrid) -> usize {
-    0
+    input.count_antinodes_with_harmonics()
 }
 
 #[cfg(test)]
@@ -64,7 +64,25 @@ mod tests {
 
     #[test]
     fn part2_sample_input() {
-        let expected = 0;
+        let expected = 34;
         assert_eq!(expected, part2(sample_input()))
+    }
+
+    #[test]
+    fn part2_simple_input() {
+        let grid: AntennaGrid = r#"T.........
+...T......
+.T........
+..........
+..........
+..........
+..........
+..........
+..........
+.........."#
+            .parse()
+            .unwrap();
+
+        assert_eq!(9, grid.count_antinodes_with_harmonics());
     }
 }

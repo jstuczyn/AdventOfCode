@@ -15,7 +15,7 @@
 use crate::constants::{EMPTY_PIXEL, FILLED_PIXEL};
 use anyhow::bail;
 use std::fmt::{Display, Formatter};
-use std::ops::{Add, AddAssign, Deref, Index, IndexMut};
+use std::ops::{Add, AddAssign, Deref, Index, IndexMut, Sub, SubAssign};
 use std::str::FromStr;
 use std::vec::IntoIter;
 use winnow::ascii::line_ending;
@@ -106,6 +106,24 @@ impl AddAssign<(isize, isize)> for Position {
     fn add_assign(&mut self, (dx, dy): (isize, isize)) {
         self.x += dx;
         self.y += dy;
+    }
+}
+
+impl Sub<(isize, isize)> for Position {
+    type Output = Position;
+
+    fn sub(self, (dx, dy): (isize, isize)) -> Self::Output {
+        Position {
+            x: self.x - dx,
+            y: self.y - dy,
+        }
+    }
+}
+
+impl SubAssign<(isize, isize)> for Position {
+    fn sub_assign(&mut self, (dx, dy): (isize, isize)) {
+        self.x -= dx;
+        self.y -= dy;
     }
 }
 
