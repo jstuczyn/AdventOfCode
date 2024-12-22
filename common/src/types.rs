@@ -118,6 +118,12 @@ impl From<(usize, usize)> for Position {
     }
 }
 
+impl From<(isize, isize)> for Position {
+    fn from((x, y): (isize, isize)) -> Self {
+        Position { x, y }
+    }
+}
+
 impl From<Position> for (isize, isize) {
     fn from(pos: Position) -> Self {
         (pos.x, pos.y)
