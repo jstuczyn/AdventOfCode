@@ -26,12 +26,13 @@ mod common;
 pub struct Day09;
 
 pub fn part1(mut input: DiskMap) -> usize {
-    input.defragment();
+    input.defragment_blocks();
     input.checksum()
 }
 
-pub fn part2(input: DiskMap) -> usize {
-    0
+pub fn part2(mut input: DiskMap) -> usize {
+    input.defragment_files();
+    input.checksum()
 }
 
 #[cfg(test)]
@@ -51,7 +52,7 @@ mod tests {
 
     #[test]
     fn part2_sample_input() {
-        let expected = 0;
-        assert_eq!(expected, part2(sample_input()))
+        let expected = 2858;
+        assert_eq!(expected, part2(sample_input()));
     }
 }

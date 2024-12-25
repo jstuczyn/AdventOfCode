@@ -14,7 +14,6 @@
 
 use std::cmp::Ordering;
 use std::collections::BTreeMap;
-use std::fmt::{Debug, Formatter};
 use std::str::FromStr;
 
 #[derive(Copy, Clone, Debug)]
@@ -112,35 +111,6 @@ pub struct DiskMap {
     free_spaces: BTreeMap<Block, Sector>,
 }
 
-impl Debug for DiskMap {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        // debug implementation can be inefficient
-        let mut block = 0;
-        loop {
-            if let Some(file) = self.files.get(&block) {
-                let size = file.sector.size;
-                for _ in 0..size {
-                    write!(f, "{}", file.id)?;
-                }
-                block += size;
-                continue;
-            }
-
-            if let Some(space) = self.free_spaces.get(&block) {
-                let size = space.size;
-                for _ in 0..size {
-                    write!(f, ".")?;
-                }
-                block += size;
-                continue;
-            }
-            break;
-        }
-
-        Ok(())
-    }
-}
-
 impl FromStr for DiskMap {
     type Err = anyhow::Error;
 
@@ -168,7 +138,7 @@ impl FromStr for DiskMap {
 
 impl DiskMap {
     #[allow(clippy::unwrap_used)]
-    fn move_last_file(&mut self) {
+    fn move_last_file_with_split(&mut self) {
         // SAFETY: during defragmentation procedure we have at least one file at all times...
         let file = self.files.pop_last().unwrap().1;
 
@@ -202,11 +172,56 @@ impl DiskMap {
         }
     }
 
-    pub fn defragment(&mut self) {
+    pub fn defragment_blocks(&mut self) {
         while self.is_fragmented() {
-            self.move_last_file();
+            self.move_last_file_with_split();
         }
         self.free_spaces = BTreeMap::new();
+    }
+
+    #[allow(clippy::unwrap_used)]
+    fn try_move_file(&mut self, file_position: Block) {
+        // SAFETY: this file must exist otherwise the method wouldn't have been called
+        let file = self.files.remove(&file_position).unwrap();
+
+        // try to find a spot for the file
+        if let Some(space) = self
+            .free_spaces
+            .values()
+            .find(|s| s.size() >= file.size() && s.block < file_position)
+        {
+            let space_block = space.block;
+            let space_removed = self.free_spaces.remove(&space_block).unwrap();
+            self.files.insert(
+                space_block,
+                File {
+                    id: file.id,
+                    sector: Sector {
+                        block: space_block,
+                        size: file.size(),
+                    },
+                },
+            );
+            if space_removed.size() > file.size() {
+                self.free_spaces.insert(
+                    space_removed.block + file.size(),
+                    Sector {
+                        block: space_removed.block + file.sector.size,
+                        size: space_removed.size() - file.sector.size,
+                    },
+                );
+            }
+        } else {
+            // no appropriate space - put the file back in the original location
+            self.files.insert(file_position, file);
+        }
+    }
+
+    pub fn defragment_files(&mut self) {
+        let file_blocks_to_move = self.files.keys().rev().copied().collect::<Vec<_>>();
+        for file_position in file_blocks_to_move {
+            self.try_move_file(file_position);
+        }
     }
 
     pub fn checksum(&self) -> usize {
@@ -255,21 +270,5 @@ mod tests {
             free_spaces: BTreeMap::new(),
         };
         assert_eq!(1928, disk_map.checksum());
-    }
-
-    #[test]
-    fn disk_map_debug() {
-        let map: DiskMap = "2333133121414131402".parse().unwrap();
-        assert_eq!(
-            format!("{map:?}"),
-            "00...111...2...333.44.5555.6666.777.888899"
-        );
-    }
-
-    #[test]
-    fn simple_defrag() {
-        let mut map: DiskMap = "12345".parse().unwrap();
-        map.defragment();
-        assert_eq!(format!("{map:?}"), "022111222")
     }
 }
