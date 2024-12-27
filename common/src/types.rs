@@ -202,6 +202,28 @@ impl Position {
     }
 
     #[inline]
+    pub const fn cardinal_adjacent(&self) -> [Position; 4] {
+        [
+            Position {
+                x: self.x,
+                y: self.y + 1,
+            },
+            Position {
+                x: self.x + 1,
+                y: self.y,
+            },
+            Position {
+                x: self.x,
+                y: self.y - 1,
+            },
+            Position {
+                x: self.x - 1,
+                y: self.y,
+            },
+        ]
+    }
+
+    #[inline]
     pub const fn adjacent(&self) -> [Position; 8] {
         [
             Position {
@@ -318,13 +340,13 @@ impl<T> Index<(usize, usize)> for Grid<T> {
     type Output = T;
 
     fn index(&self, (x, y): (usize, usize)) -> &Self::Output {
-        &self.rows[x][y]
+        &self.rows[y][x]
     }
 }
 
 impl<T> IndexMut<(usize, usize)> for Grid<T> {
     fn index_mut(&mut self, (x, y): (usize, usize)) -> &mut Self::Output {
-        &mut self.rows[x][y]
+        &mut self.rows[y][x]
     }
 }
 

@@ -29,7 +29,7 @@ pub struct Day03;
 fn most_common_bit(input: &[u16], position: u8) -> u8 {
     let mut set_count = 0;
     for num in input {
-        set_count += num >> position & 1;
+        set_count += (num >> position) & 1;
     }
 
     let unset = input.len() as u16 - set_count;
@@ -73,7 +73,7 @@ fn sieve(mut input: Vec<u16>, num_bits: u8, most_common: bool) -> u16 {
             target_bit = !target_bit & 1;
         }
 
-        input.retain(|x| (x >> bit & 1) as u8 == target_bit)
+        input.retain(|x| ((x >> bit) & 1) as u8 == target_bit)
     }
 
     if input.len() > 1 {
