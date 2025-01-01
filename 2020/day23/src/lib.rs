@@ -16,6 +16,7 @@
 #![allow(clippy::unwrap_used)]
 #![allow(clippy::expect_used)]
 
+use aoc_common::helpers::split_into_digits;
 use aoc_solution::Aoc;
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -306,18 +307,6 @@ pub fn part2(input: usize) -> usize {
     let mut game = CrabGame::new_million(input);
     game.make_n_moves(10_000_000);
     game.part2_result()
-}
-
-fn split_into_digits(number: usize) -> Vec<usize> {
-    let mut digits = Vec::new();
-    let mut n = number;
-    while n > 9 {
-        digits.push(n % 10);
-        n /= 10;
-    }
-    digits.push(n);
-    digits.reverse();
-    digits
 }
 
 #[cfg(test)]
