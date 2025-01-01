@@ -64,6 +64,27 @@ where
 
 /// Parses input in the form of:
 ///
+/// value1<token>value2<token>...
+///
+/// to Vec<T>
+pub fn parse_token_separated_values<T>(raw: &str, token: &str) -> Result<Vec<T>>
+where
+    T: FromStr,
+    <T as FromStr>::Err: Debug,
+{
+    raw.trim()
+        .split(token)
+        .map(|split| split.parse())
+        .collect::<Result<Vec<T>, _>>()
+        .map_err(|err| {
+            Error::msg(format!(
+                "input could not be parsed into desired type: {err:?}"
+            ))
+        })
+}
+
+/// Parses input in the form of:
+///
 /// value1,value2,...
 ///
 /// to Vec<T>
@@ -72,14 +93,20 @@ where
     T: FromStr,
     <T as FromStr>::Err: Debug,
 {
-    raw.split(',')
-        .map(|split| split.parse())
-        .collect::<Result<Vec<T>, _>>()
-        .map_err(|err| {
-            Error::msg(format!(
-                "input could not be parsed into desired type - {err:?}"
-            ))
-        })
+    parse_token_separated_values(raw, ",")
+}
+
+/// Parses input in the form of:
+///
+/// value1 value2 ...
+///
+/// to Vec<T>
+pub fn parse_space_separated_values<T>(raw: &str) -> Result<Vec<T>>
+where
+    T: FromStr,
+    <T as FromStr>::Err: Debug,
+{
+    parse_token_separated_values(raw, " ")
 }
 
 /// Splits input in the form of:

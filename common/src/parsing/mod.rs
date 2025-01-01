@@ -45,6 +45,13 @@ pub struct LineParser<T>(PhantomData<T>);
 /// to Vec<T>
 pub struct CommaSeparatedParser<T>(PhantomData<T>);
 
+/// Parses input in the form of:
+///
+/// value1 value2 ...
+///
+/// to Vec<T>
+pub struct SpaceSeparatedParser<T>(PhantomData<T>);
+
 /// Splits input in the form of:
 ///
 /// group1_value1
@@ -115,6 +122,18 @@ where
 
     fn parse_input(raw: &str) -> Result<Self::Output> {
         parse_comma_separated_values(raw)
+    }
+}
+
+impl<T> AocInputParser for SpaceSeparatedParser<T>
+where
+    T: FromStr,
+    <T as FromStr>::Err: Debug,
+{
+    type Output = Vec<T>;
+
+    fn parse_input(raw: &str) -> Result<Self::Output> {
+        parse_space_separated_values(raw)
     }
 }
 

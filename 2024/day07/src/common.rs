@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use aoc_common::helpers::split_into_digits_reversed;
 use aoc_common::parsing::combinators::parse_number;
 use std::str::FromStr;
 use winnow::ascii::space1;
@@ -20,26 +21,9 @@ use winnow::{PResult, Parser};
 
 pub type Operators<'a> = &'a [fn(usize, usize) -> usize];
 
-#[inline]
-fn to_digits_reversed(mut input: usize) -> Vec<usize> {
-    let mut digits = Vec::new();
-
-    if input == 0 {
-        digits.push(0);
-        return digits;
-    }
-
-    while input > 0 {
-        digits.push(input % 10);
-        input /= 10;
-    }
-
-    digits
-}
-
 fn concat_operator(a: usize, b: usize) -> usize {
     // converts 12345 into [5,4,3,2,1]
-    let rhs_digits = to_digits_reversed(b);
+    let rhs_digits = split_into_digits_reversed(b);
 
     let mut res = a * 10usize.pow(rhs_digits.len() as u32);
     for (i, &digit) in rhs_digits.iter().enumerate() {
