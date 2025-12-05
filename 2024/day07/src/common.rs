@@ -17,7 +17,7 @@ use aoc_common::parsing::combinators::parse_number;
 use std::str::FromStr;
 use winnow::ascii::space1;
 use winnow::combinator::{separated, separated_pair};
-use winnow::{PResult, Parser};
+use winnow::{ModalResult, Parser};
 
 pub type Operators<'a> = &'a [fn(usize, usize) -> usize];
 
@@ -70,7 +70,7 @@ impl Equation {
     }
 }
 
-fn equation_parser(input: &mut &str) -> PResult<Equation> {
+fn equation_parser(input: &mut &str) -> ModalResult<Equation> {
     separated_pair(parse_number, ": ", operands_parser)
         .map(|(test_value, operands)| Equation {
             test_value,
@@ -79,7 +79,7 @@ fn equation_parser(input: &mut &str) -> PResult<Equation> {
         .parse_next(input)
 }
 
-fn operands_parser(input: &mut &str) -> PResult<Vec<usize>> {
+fn operands_parser(input: &mut &str) -> ModalResult<Vec<usize>> {
     separated(1.., parse_number::<usize>, space1).parse_next(input)
 }
 

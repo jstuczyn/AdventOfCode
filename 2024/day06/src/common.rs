@@ -19,7 +19,7 @@ use std::str::FromStr;
 use winnow::ascii::line_ending;
 use winnow::combinator::{alt, repeat, separated};
 use winnow::token::literal;
-use winnow::{PResult, Parser};
+use winnow::{ModalResult, Parser};
 
 #[derive(Debug, Copy, Clone)]
 enum MapFeature {
@@ -68,7 +68,7 @@ impl Guard {
     }
 }
 
-fn map_feature_parser(input: &mut &str) -> PResult<MapFeature> {
+fn map_feature_parser(input: &mut &str) -> ModalResult<MapFeature> {
     alt((
         literal('.').value(MapFeature::Empty),
         literal('#').value(MapFeature::Obstruction),
@@ -77,7 +77,7 @@ fn map_feature_parser(input: &mut &str) -> PResult<MapFeature> {
     .parse_next(input)
 }
 
-fn row_parser(input: &mut &str) -> PResult<Vec<MapFeature>> {
+fn row_parser(input: &mut &str) -> ModalResult<Vec<MapFeature>> {
     repeat(1.., map_feature_parser).parse_next(input)
 }
 

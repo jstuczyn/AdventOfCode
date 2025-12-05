@@ -16,7 +16,7 @@ use aoc_common::parsing::combinators::parse_number;
 use aoc_solution::parser::AocInputParser;
 use winnow::combinator::{alt, delimited, iterator, separated_pair};
 use winnow::token::any;
-use winnow::{PResult, Parser};
+use winnow::{ModalResult, Parser};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Instruction {
@@ -34,13 +34,13 @@ impl MulInstruction {
     }
 }
 
-fn mul_parser(input: &mut &str) -> PResult<MulInstruction> {
+fn mul_parser(input: &mut &str) -> ModalResult<MulInstruction> {
     delimited("mul(", separated_pair(parse_number, ",", parse_number), ")")
         .map(|(lhs, rhs)| MulInstruction(lhs, rhs))
         .parse_next(input)
 }
 
-fn instruction_parser(input: &mut &str) -> PResult<Instruction> {
+fn instruction_parser(input: &mut &str) -> ModalResult<Instruction> {
     alt((
         mul_parser.map(Instruction::Mul),
         "don't".value(Instruction::Dont),

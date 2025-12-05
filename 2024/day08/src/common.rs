@@ -20,7 +20,7 @@ use std::str::FromStr;
 use winnow::combinator::alt;
 use winnow::stream::AsChar;
 use winnow::token::{literal, take_while};
-use winnow::{PResult, Parser};
+use winnow::{ModalResult, Parser};
 
 #[derive(Debug, Copy, Clone)]
 pub enum AntennaGridItem {
@@ -38,7 +38,7 @@ impl Display for AntennaGridItem {
 }
 
 impl ParsableGridItem for AntennaGridItem {
-    const PARSER: fn(&mut &str) -> PResult<Self> = |input| {
+    const PARSER: fn(&mut &str) -> ModalResult<Self> = |input| {
         alt((
             literal('.').value(AntennaGridItem::Empty),
             take_while(1..=1, AsChar::is_alphanum)

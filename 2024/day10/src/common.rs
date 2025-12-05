@@ -16,7 +16,7 @@ use aoc_common::parsing::combinators::parse_digit;
 use aoc_common::types::{Grid, ParsableGridItem, Position};
 use std::collections::HashMap;
 use std::str::FromStr;
-use winnow::PResult;
+use winnow::ModalResult;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Hill {
@@ -24,7 +24,7 @@ pub struct Hill {
 }
 
 impl ParsableGridItem for Hill {
-    const PARSER: fn(&mut &str) -> PResult<Self> =
+    const PARSER: fn(&mut &str) -> ModalResult<Self> =
         |input| parse_digit(input).map(|height| Hill { height });
 }
 
