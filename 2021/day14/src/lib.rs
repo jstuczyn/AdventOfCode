@@ -145,8 +145,8 @@ impl Manual {
     fn max_frequency_difference(&self) -> usize {
         let count = self.element_count();
 
-        count.iter().max_by_key(|(_, &count)| count).unwrap().1
-            - count.iter().min_by_key(|(_, &count)| count).unwrap().1
+        count.iter().max_by_key(|&(_, count)| count).unwrap().1
+            - count.iter().min_by_key(|&(_, count)| count).unwrap().1
     }
 }
 

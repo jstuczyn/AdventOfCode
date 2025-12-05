@@ -115,7 +115,7 @@ impl NumberTree {
         debug_assert!(val >= 10);
 
         let x = val / 2;
-        let y = if val % 2 == 0 { x } else { x + 1 };
+        let y = if val.is_multiple_of(2) { x } else { x + 1 };
 
         self.heights[height][branch] = Some(Number::Pair);
         self.insert_num_node(height + 1, branch * 2, x);
@@ -142,11 +142,10 @@ impl NumberTree {
         if let Some(this_id) = in_order
             .iter()
             .position(|n| n == &((this_height, this_branch), 0))
+            && this_id > 0
         {
-            if this_id > 0 {
-                let ((height, branch), current_val) = in_order[this_id - 1];
-                self.heights[height][branch] = Some(Number::Regular(current_val + val))
-            }
+            let ((height, branch), current_val) = in_order[this_id - 1];
+            self.heights[height][branch] = Some(Number::Regular(current_val + val))
         }
     }
 
@@ -155,11 +154,10 @@ impl NumberTree {
         if let Some(this_id) = in_order
             .iter()
             .position(|n| n == &((this_height, this_branch), 0))
+            && this_id < in_order.len() - 1
         {
-            if this_id < in_order.len() - 1 {
-                let ((height, branch), current_val) = in_order[this_id + 1];
-                self.heights[height][branch] = Some(Number::Regular(current_val + val))
-            }
+            let ((height, branch), current_val) = in_order[this_id + 1];
+            self.heights[height][branch] = Some(Number::Regular(current_val + val))
         }
     }
 

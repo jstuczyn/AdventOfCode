@@ -105,9 +105,7 @@ impl Layer {
     #[allow(dead_code)]
     fn transparent(height: usize, width: usize) -> Self {
         Layer::new(
-            std::iter::repeat(TRANSPARENT_PIXEL)
-                .take(height * width)
-                .collect(),
+            std::iter::repeat_n(TRANSPARENT_PIXEL, height * width).collect(),
             height,
             width,
         )

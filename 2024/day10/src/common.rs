@@ -62,21 +62,21 @@ impl TopographicMap {
 
         let mut trail_ends = Vec::new();
         for adj in position.cardinal_adjacent() {
-            if let Some(&adj_hill) = self.inner.get(adj) {
-                if adj_hill.height == hill.height + 1 {
-                    if adj_hill.height == 9 {
-                        trail_ends.push(adj);
-                        continue;
-                    }
-                    let reachable = self.check_subtrail(
-                        (adj, adj_hill),
-                        consider_alternative_paths,
-                        reachable_trails,
-                    );
-                    for end in reachable {
-                        if consider_alternative_paths || !trail_ends.contains(&end) {
-                            trail_ends.push(end);
-                        }
+            if let Some(&adj_hill) = self.inner.get(adj)
+                && adj_hill.height == hill.height + 1
+            {
+                if adj_hill.height == 9 {
+                    trail_ends.push(adj);
+                    continue;
+                }
+                let reachable = self.check_subtrail(
+                    (adj, adj_hill),
+                    consider_alternative_paths,
+                    reachable_trails,
+                );
+                for end in reachable {
+                    if consider_alternative_paths || !trail_ends.contains(&end) {
+                        trail_ends.push(end);
                     }
                 }
             }

@@ -304,7 +304,7 @@ impl<T> Grid<T> {
         self.rows.is_empty()
     }
 
-    pub fn iter(&self) -> GridIterator<T> {
+    pub fn iter(&self) -> GridIterator<'_, T> {
         GridIterator {
             next: Default::default(),
             grid: self,
@@ -485,9 +485,9 @@ impl<T> Iterator for GridIntoIterator<T> {
 mod tests {
     use super::*;
     use crate::types::tests::DotOrPound::{Dot, Pound};
+    use winnow::ModalResult;
     use winnow::combinator::alt;
     use winnow::token::literal;
-    use winnow::ModalResult;
 
     #[derive(Debug, Copy, Clone, PartialEq)]
     enum DotOrPound {

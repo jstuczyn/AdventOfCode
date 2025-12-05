@@ -51,7 +51,7 @@ impl Group {
     fn all_yes(&self) -> usize {
         self.answers
             .iter()
-            .filter(|(_, &count)| count == self.size)
+            .filter(|&(_, count)| *count == self.size)
             .count()
     }
 }

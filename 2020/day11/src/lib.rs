@@ -18,7 +18,6 @@
 
 use aoc_solution::Aoc;
 use std::fmt::{self, Display, Formatter};
-use std::mem;
 use std::ops::{Index, IndexMut};
 
 #[derive(Aoc)]
@@ -58,14 +57,11 @@ impl From<Seat> for char {
 
 impl Seat {
     fn swap(&mut self) {
-        mem::swap(
-            self,
-            &mut match self {
-                Seat::Empty => Seat::Occupied,
-                Seat::Occupied => Seat::Empty,
-                Seat::Floor => Seat::Floor,
-            },
-        );
+        *self = match self {
+            Seat::Empty => Seat::Occupied,
+            Seat::Occupied => Seat::Empty,
+            Seat::Floor => Seat::Floor,
+        };
     }
 
     fn is_floor(&self) -> bool {

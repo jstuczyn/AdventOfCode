@@ -68,10 +68,10 @@ pub fn try_from_ascii_and_human_digits(s: &str) -> usize {
         let c = bytes[i];
         if c.is_ascii_digit() {
             break c - b'0';
-        } else if might_begin_human_readable(c as char) {
-            if let Some(digit) = get_start_human_readable_digit(&bytes[i..]) {
-                break digit;
-            }
+        } else if might_begin_human_readable(c as char)
+            && let Some(digit) = get_start_human_readable_digit(&bytes[i..])
+        {
+            break digit;
         }
         i += 1;
     };
@@ -81,10 +81,10 @@ pub fn try_from_ascii_and_human_digits(s: &str) -> usize {
         let c = bytes[i];
         if c.is_ascii_digit() {
             break c - b'0';
-        } else if might_end_human_readable(c as char) {
-            if let Some(digit) = get_end_human_readable_digit(&bytes[..=i]) {
-                break digit;
-            }
+        } else if might_end_human_readable(c as char)
+            && let Some(digit) = get_end_human_readable_digit(&bytes[..=i])
+        {
+            break digit;
         }
         i -= 1;
     };

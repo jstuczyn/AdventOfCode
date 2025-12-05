@@ -198,10 +198,10 @@ impl FileSystem {
         child_name: &str,
     ) -> Result<usize, anyhow::Error> {
         for child_id in &self.arena[parent_idx].children {
-            if let FileSystemEntry::Directory { directory } = &self.arena[*child_id].entry {
-                if directory.name == child_name {
-                    return Ok(*child_id);
-                }
+            if let FileSystemEntry::Directory { directory } = &self.arena[*child_id].entry
+                && directory.name == child_name
+            {
+                return Ok(*child_id);
             }
         }
         bail!("child {child_name} doesn't exist for parent {parent_idx}!")

@@ -95,15 +95,15 @@ impl SquidGrid {
         ];
 
         for (x, y) in adjacent {
-            if let Some(x) = *x {
-                if let Some(y) = *y {
-                    self[(x, y)] += 1;
+            if let Some(x) = *x
+                && let Some(y) = *y
+            {
+                self[(x, y)] += 1;
 
-                    // if adjacent's energy went above 9 and it hasn't flashed during this step,
-                    // it should flash
-                    if self[(x, y)] > 9 && !flashed.contains(&(x, y)) {
-                        self.flash((x, y), flashed);
-                    }
+                // if adjacent's energy went above 9 and it hasn't flashed during this step,
+                // it should flash
+                if self[(x, y)] > 9 && !flashed.contains(&(x, y)) {
+                    self.flash((x, y), flashed);
                 }
             }
         }
