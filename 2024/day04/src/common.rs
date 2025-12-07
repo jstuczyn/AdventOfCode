@@ -17,7 +17,7 @@ use std::str::FromStr;
 use winnow::ascii::line_ending;
 use winnow::combinator::{alt, repeat, separated};
 use winnow::token::literal;
-use winnow::{PResult, Parser};
+use winnow::{ModalResult, Parser};
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum XmasLetter {
@@ -47,7 +47,7 @@ impl XmasLetter {
     }
 }
 
-fn xmas_letter_parser(input: &mut &str) -> PResult<XmasLetter> {
+fn xmas_letter_parser(input: &mut &str) -> ModalResult<XmasLetter> {
     alt((
         literal('X').value(XmasLetter::X),
         literal('M').value(XmasLetter::M),
@@ -57,7 +57,7 @@ fn xmas_letter_parser(input: &mut &str) -> PResult<XmasLetter> {
     .parse_next(input)
 }
 
-fn row_parser(input: &mut &str) -> PResult<Vec<XmasLetter>> {
+fn row_parser(input: &mut &str) -> ModalResult<Vec<XmasLetter>> {
     repeat(1.., xmas_letter_parser).parse_next(input)
 }
 

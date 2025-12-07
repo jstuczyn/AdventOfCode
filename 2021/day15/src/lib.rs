@@ -101,18 +101,13 @@ impl RiskLevelMap {
             val
         } else {
             let res = val + i;
-            if res > 9 {
-                res - 9
-            } else {
-                res
-            }
+            if res > 9 { res - 9 } else { res }
         }
     }
 
     fn expand_row_five_folds(&mut self, row: usize) {
         let old = std::mem::take(&mut self.rows[row]);
-        self.rows[row] = std::iter::repeat(old)
-            .take(5)
+        self.rows[row] = std::iter::repeat_n(old, 5)
             .enumerate()
             .flat_map(|(i, vals)| vals.into_iter().map(move |v| Self::map_value(i, v)))
             .collect::<Vec<_>>();

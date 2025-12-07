@@ -115,8 +115,7 @@ impl Tile {
     fn unset() -> Self {
         Tile {
             id: 0,
-            rows: std::iter::repeat(std::iter::repeat(Pixel::Inactive).take(10).collect())
-                .take(10)
+            rows: std::iter::repeat_n(std::iter::repeat_n(Pixel::Inactive, 10).collect(), 10)
                 .collect(),
         }
     }
@@ -462,9 +461,7 @@ impl Debug for TileGrid {
 
 impl TileGrid {
     fn new(size: usize) -> Self {
-        let tiles = std::iter::repeat(std::iter::repeat(None).take(size).collect())
-            .take(size)
-            .collect();
+        let tiles = std::iter::repeat_n(std::iter::repeat_n(None, size).collect(), size).collect();
 
         TileGrid { tiles }
     }

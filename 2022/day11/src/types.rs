@@ -149,7 +149,7 @@ impl Monkey {
     fn inspect_item(&self, worry_level: usize, worry_strat: WorryDecrease) -> ThrowResult {
         let worry_level = worry_strat.apply_strategy(self.op.apply_change(worry_level));
 
-        let target_monkey = if worry_level % self.test_value == 0 {
+        let target_monkey = if worry_level.is_multiple_of(self.test_value) {
             self.throw_on_true
         } else {
             self.throw_on_false

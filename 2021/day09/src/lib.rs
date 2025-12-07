@@ -87,17 +87,17 @@ impl HeightMap {
         }
 
         // right
-        if let Some(&right) = self.rows[y].get(x + 1) {
-            if right <= value {
-                return false;
-            }
+        if let Some(&right) = self.rows[y].get(x + 1)
+            && right <= value
+        {
+            return false;
         }
 
         // down
-        if let Some(down_row) = self.rows.get(y + 1) {
-            if down_row[x] <= value {
-                return false;
-            }
+        if let Some(down_row) = self.rows.get(y + 1)
+            && down_row[x] <= value
+        {
+            return false;
         }
 
         true
@@ -135,10 +135,10 @@ impl HeightMap {
         }
 
         // right
-        if let Some(&right_value) = self.rows[point.y].get(point.x + 1) {
-            if right_value != 9 {
-                new_basin_members.push(Point::new(point.x + 1, point.y, right_value))
-            }
+        if let Some(&right_value) = self.rows[point.y].get(point.x + 1)
+            && right_value != 9
+        {
+            new_basin_members.push(Point::new(point.x + 1, point.y, right_value))
         }
 
         // down

@@ -22,7 +22,7 @@ use winnow::ascii::line_ending;
 use winnow::combinator::{repeat, separated};
 use winnow::error::ParserError;
 use winnow::stream::{Compare, Stream, StreamIsPartial};
-use winnow::{PResult, Parser};
+use winnow::{ModalResult, Parser};
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Default)]
 pub enum Pixel {
@@ -304,7 +304,7 @@ impl<T> Grid<T> {
         self.rows.is_empty()
     }
 
-    pub fn iter(&self) -> GridIterator<T> {
+    pub fn iter(&self) -> GridIterator<'_, T> {
         GridIterator {
             next: Default::default(),
             grid: self,
@@ -351,7 +351,7 @@ impl<T> IndexMut<(usize, usize)> for Grid<T> {
 }
 
 pub trait ParsableGridItem: Sized {
-    const PARSER: fn(&mut &str) -> PResult<Self>;
+    const PARSER: fn(&mut &str) -> ModalResult<Self>;
 }
 
 impl<T> FromStr for Grid<T>
@@ -485,9 +485,9 @@ impl<T> Iterator for GridIntoIterator<T> {
 mod tests {
     use super::*;
     use crate::types::tests::DotOrPound::{Dot, Pound};
+    use winnow::ModalResult;
     use winnow::combinator::alt;
     use winnow::token::literal;
-    use winnow::PResult;
 
     #[derive(Debug, Copy, Clone, PartialEq)]
     enum DotOrPound {
@@ -496,10 +496,10 @@ mod tests {
     }
 
     impl ParsableGridItem for DotOrPound {
-        const PARSER: fn(&mut &str) -> PResult<Self> = dot_or_pound_parser;
+        const PARSER: fn(&mut &str) -> ModalResult<Self> = dot_or_pound_parser;
     }
 
-    fn dot_or_pound_parser(input: &mut &str) -> PResult<DotOrPound> {
+    fn dot_or_pound_parser(input: &mut &str) -> ModalResult<DotOrPound> {
         alt((literal('.').value(Dot), literal('#').value(Pound))).parse_next(input)
     }
 

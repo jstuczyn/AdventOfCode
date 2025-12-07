@@ -16,7 +16,7 @@
 #![allow(clippy::unwrap_used)]
 #![allow(clippy::expect_used)]
 
-use anyhow::{bail, Context};
+use anyhow::{Context, bail};
 use aoc_solution::Aoc;
 use std::str::FromStr;
 
@@ -91,7 +91,7 @@ type Password<'a> = &'a str;
 // `lowerbound-upperbound character: password`
 // for example: `1-3 a: abcde`
 // note that final space separates policy from password
-fn parse_into_policy_password(input_line: &str) -> Option<(Policy, Password)> {
+fn parse_into_policy_password(input_line: &str) -> Option<(Policy, Password<'_>)> {
     let split: Vec<_> = input_line.split_whitespace().collect();
 
     if split.len() != 3 {

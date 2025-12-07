@@ -141,10 +141,10 @@ fn calculate(mut rpn_queue: VecDeque<Token>) -> usize {
         match token {
             Token::Operand(num) => stack.push(num),
             Token::Operator(operator) => {
-                if let Some(y) = stack.pop() {
-                    if let Some(x) = stack.pop() {
-                        stack.push(operator.apply(x, y));
-                    }
+                if let Some(y) = stack.pop()
+                    && let Some(x) = stack.pop()
+                {
+                    stack.push(operator.apply(x, y));
                 }
             }
         }

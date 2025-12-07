@@ -17,7 +17,7 @@ use std::collections::HashMap;
 use std::str::FromStr;
 use winnow::ascii::line_ending;
 use winnow::combinator::{alt, separated, separated_pair};
-use winnow::{PResult, Parser};
+use winnow::{ModalResult, Parser};
 
 #[derive(Clone, Debug)]
 pub struct PrintingRules {
@@ -107,17 +107,17 @@ impl PrintingUpdate {
     }
 }
 
-fn ordering_rule_parser(input: &mut &str) -> PResult<RawOrderingRule> {
+fn ordering_rule_parser(input: &mut &str) -> ModalResult<RawOrderingRule> {
     separated_pair(parse_number, '|', parse_number)
         .map(|(first, second)| RawOrderingRule { first, second })
         .parse_next(input)
 }
 
-fn raw_ordering_rules_parser(input: &mut &str) -> PResult<Vec<RawOrderingRule>> {
+fn raw_ordering_rules_parser(input: &mut &str) -> ModalResult<Vec<RawOrderingRule>> {
     separated(1.., ordering_rule_parser, line_ending).parse_next(input)
 }
 
-fn printing_update_parser(input: &mut &str) -> PResult<PrintingUpdate> {
+fn printing_update_parser(input: &mut &str) -> ModalResult<PrintingUpdate> {
     separated(1.., parse_number::<usize>, ',')
         .map(|pages_to_produce| PrintingUpdate { pages_to_produce })
         .parse_next(input)

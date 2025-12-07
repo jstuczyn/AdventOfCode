@@ -1,4 +1,4 @@
-// Copyright 2024 Jedrzej Stuczynski
+// Copyright 2023 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::str::FromStr;
-use winnow::ascii::digit1;
-use winnow::stream::AsChar;
-use winnow::token::take_while;
-use winnow::ModalResult;
-use winnow::Parser;
+use aoc_common::define_aoc_benchmark;
+use day01_2025::Day01;
 
-pub fn parse_number<T: FromStr>(input: &mut &str) -> ModalResult<T> {
-    digit1.parse_to().parse_next(input)
-}
-
-pub fn parse_digit<T: FromStr>(input: &mut &str) -> ModalResult<T> {
-    take_while(1, AsChar::is_dec_digit)
-        .parse_to()
-        .parse_next(input)
-}
+define_aoc_benchmark!("inputs/2025/day01", Day01);

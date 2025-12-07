@@ -121,13 +121,10 @@ where
 ///
 /// to Vec<String>
 pub fn split_to_string_groups(raw: &str) -> Vec<String> {
-    let split = raw
-        .replace("\r\n", "\n") // Windows fix
+    raw.replace("\r\n", "\n") // Windows fix
         .split("\n\n")
         .map(|split| split.to_owned())
-        .collect();
-
-    split
+        .collect()
 }
 
 /// Parses input in the form of:

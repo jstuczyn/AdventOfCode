@@ -14,9 +14,9 @@
 
 use crate::ResultExt;
 use proc_macro2::{Ident, Span, TokenStream};
-use quote::{quote, ToTokens};
+use quote::{ToTokens, quote};
 use syn::parse::{Parse, ParseStream};
-use syn::{parenthesized, Attribute, Error, Token};
+use syn::{Attribute, Error, Token, parenthesized};
 
 fn unimplemented_inner(custom_err: bool, name: &str) -> TokenStream {
     // we're going to default to anyhow
@@ -48,40 +48,40 @@ impl AocContainer {
     }
 
     fn part1_impl(&self) -> TokenStream {
-        if let Some(p1) = &self.attributes.part1 {
-            if let Some(runner) = &p1.runner {
-                return self.wrap_runner(runner);
-            }
+        if let Some(p1) = &self.attributes.part1
+            && let Some(runner) = &p1.runner
+        {
+            return self.wrap_runner(runner);
         }
 
         self.unimplemented_inner("part1")
     }
 
     fn part1_output(&self) -> TokenStream {
-        if let Some(p1) = &self.attributes.part1 {
-            if let Some(ty) = &p1.output_ty {
-                return quote! { #ty };
-            }
+        if let Some(p1) = &self.attributes.part1
+            && let Some(ty) = &p1.output_ty
+        {
+            return quote! { #ty };
         }
 
         quote! { String }
     }
 
     fn part2_impl(&self) -> TokenStream {
-        if let Some(p2) = &self.attributes.part2 {
-            if let Some(runner) = &p2.runner {
-                return self.wrap_runner(runner);
-            }
+        if let Some(p2) = &self.attributes.part2
+            && let Some(runner) = &p2.runner
+        {
+            return self.wrap_runner(runner);
         }
 
         self.unimplemented_inner("part2")
     }
 
     fn part2_output(&self) -> TokenStream {
-        if let Some(p2) = &self.attributes.part2 {
-            if let Some(ty) = &p2.output_ty {
-                return quote! { #ty };
-            }
+        if let Some(p2) = &self.attributes.part2
+            && let Some(ty) = &p2.output_ty
+        {
+            return quote! { #ty };
         }
 
         quote! { String }
