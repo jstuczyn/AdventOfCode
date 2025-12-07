@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use anyhow::{Error, Result};
+use anyhow::{Error, Result, bail};
 use std::fmt::Debug;
 use std::ops::RangeInclusive;
 use std::str::FromStr;
 
 /// Parse input in the form of x=<a>..<b> to `RangeInclusive<isize>`
-pub fn parse_raw_range(raw: &str) -> Result<RangeInclusive<isize>> {
+pub fn parse_assigned_range(raw: &str) -> Result<RangeInclusive<isize>> {
     let mut bounds = raw.split('=');
     let _axis = bounds
         .next()
@@ -38,6 +38,18 @@ pub fn parse_raw_range(raw: &str) -> Result<RangeInclusive<isize>> {
         .parse()?;
 
     Ok(RangeInclusive::new(lower_bound, upper_bound))
+}
+
+/// Parse input in the form of <a>-<b> to `RangeInclusive<usize>`
+pub fn parse_value_range(raw: &str) -> Result<RangeInclusive<usize>> {
+    let Some((lower_bound, upper_bound)) = raw.split_once("-") else {
+        bail!("invalid range definition")
+    };
+
+    Ok(RangeInclusive::new(
+        lower_bound.parse()?,
+        upper_bound.parse()?,
+    ))
 }
 
 /// Parses input in the form of:

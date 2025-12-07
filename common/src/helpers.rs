@@ -22,6 +22,28 @@ pub fn root_path<P: AsRef<Path>>(segment: P) -> PathBuf {
     PathBuf::from(COMMON_ROOT).join("..").join(segment)
 }
 
+pub trait Digits {
+    fn to_digits(&self) -> Vec<usize>;
+
+    fn to_digits_reversed(&self) -> Vec<usize>;
+
+    fn from_digits(digits: &[usize]) -> Self;
+}
+
+impl Digits for usize {
+    fn to_digits(&self) -> Vec<usize> {
+        split_into_digits(*self)
+    }
+
+    fn to_digits_reversed(&self) -> Vec<usize> {
+        split_into_digits_reversed(*self)
+    }
+
+    fn from_digits(digits: &[usize]) -> Self {
+        digits_to_number(digits)
+    }
+}
+
 #[inline]
 pub fn split_into_digits(number: usize) -> Vec<usize> {
     let mut digits = Vec::new();

@@ -27,7 +27,7 @@ pub mod impls;
 pub struct FromStrParser<T: FromStr>(PhantomData<T>);
 
 /// Parse input in the form of x=<a>..<b> to `RangeInclusive<isize>`
-pub struct RangeParser;
+pub struct AssignedRangeParser;
 
 /// Parses input in the form of:
 ///
@@ -93,11 +93,11 @@ where
     }
 }
 
-impl AocInputParser for RangeParser {
+impl AocInputParser for AssignedRangeParser {
     type Output = RangeInclusive<isize>;
 
     fn parse_input(raw: &str) -> Result<Self::Output> {
-        parse_raw_range(raw)
+        parse_assigned_range(raw)
     }
 }
 
