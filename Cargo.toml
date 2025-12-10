@@ -91,7 +91,8 @@ members = [
     "2024/day10",
     "2024/day11",
     "2025/day01",
-    "2025/day02"
+    "2025/day02",
+    "2025/day03"
 ]
 
 [workspace.package]

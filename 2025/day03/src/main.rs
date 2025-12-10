@@ -1,4 +1,4 @@
-// Copyright 2023 Jedrzej Stuczynski
+// Copyright 2024 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub const FILLED_PIXEL: char = '█';
-pub const EMPTY_PIXEL: char = '⠀';
+use aoc_common::helpers::root_path;
+use aoc_solution::AocSolutionSolver;
+use day03_2025::Day03;
 
-pub const POWERS_OF_TEN: [usize; 21] = [
-    0,
-    1,
-    10,
-    100,
-    1000,
-    10000,
-    100000,
-    1000000,
-    10000000,
-    100000000,
-    1000000000,
-    10000000000,
-    100000000000,
-    1000000000000,
-    10000000000000,
-    100000000000000,
-    1000000000000000,
-    10000000000000000,
-    100000000000000000,
-    1000000000000000000,
-    10000000000000000000,
-];
+#[cfg(not(tarpaulin_include))]
+fn main() {
+    Day03::try_solve_from_file(root_path("inputs/2025/day03"))
+}
