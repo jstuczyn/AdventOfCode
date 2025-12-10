@@ -19,7 +19,7 @@ macro_rules! define_aoc_benchmark {
 
         use aoc_common::helpers::root_path;
         use aoc_common::input_read::read_input;
-        use criterion::{black_box, criterion_group, criterion_main, BatchSize, Criterion};
+        use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
         use std::fs;
 
         fn get_input() -> <$typ as AocSolution>::Input {
@@ -42,7 +42,7 @@ macro_rules! define_aoc_benchmark {
             c.bench_function(&bench_name, move |b| {
                 b.iter_batched(
                     || input.clone(),
-                    |input| <$typ as AocSolution>::part1((black_box(input))),
+                    |input| <$typ as AocSolution>::part1((std::hint::black_box(input))),
                     BatchSize::SmallInput,
                 )
             });
@@ -54,7 +54,7 @@ macro_rules! define_aoc_benchmark {
             c.bench_function(&bench_name, move |b| {
                 b.iter_batched(
                     || input.clone(),
-                    |input| <$typ as AocSolution>::part2((black_box(input))),
+                    |input| <$typ as AocSolution>::part2((std::hint::black_box(input))),
                     BatchSize::SmallInput,
                 )
             });
