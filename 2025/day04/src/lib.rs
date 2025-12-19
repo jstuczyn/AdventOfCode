@@ -12,76 +12,64 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use aoc_common::parsing::LineParser;
+use crate::common::{PaperGrid, PaperGridExt};
+use aoc_common::parsing::FromStrParser;
 use aoc_solution::Aoc;
-use common::Rotation;
 
 mod common;
 
 #[derive(Aoc)]
-#[aoc(input = Vec<Rotation>)]
-#[aoc(parser = LineParser)]
+#[aoc(input = PaperGrid)]
+#[aoc(parser = FromStrParser)]
 #[aoc(part1(output = usize, runner = part1))]
 #[aoc(part2(output = usize, runner = part2))]
-pub struct Day01;
+pub struct Day04;
 
-pub fn part1(input: Vec<Rotation>) -> usize {
-    let mut dial = 50;
-    let mut at_zero = 0;
-    for rotation in input {
-        rotation.apply(&mut dial);
-        if dial == 0 {
-            at_zero += 1
-        }
-    }
-
-    at_zero
+pub fn part1(grid: PaperGrid) -> usize {
+    grid.accessible_count()
 }
 
-pub fn part2(input: Vec<Rotation>) -> usize {
-    let mut dial = 50;
-    let mut at_zero = 0;
-    for rotation in input {
-        at_zero += rotation.apply(&mut dial);
-        if dial == 0 {
-            at_zero += 1
+pub fn part2(mut grid: PaperGrid) -> usize {
+    let mut removed = 0;
+
+    loop {
+        let iteration_removed = grid.remove_accessible();
+        removed += iteration_removed;
+        if iteration_removed == 0 {
+            break;
         }
     }
-
-    at_zero
+    removed
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use aoc_solution::parser::AocInputParser;
 
-    fn sample_input() -> Vec<Rotation> {
-        LineParser::parse_input(
-            r#"L68
-L30
-R48
-L5
-R60
-L55
-L1
-L99
-R14
-L82
-"#,
-        )
-        .unwrap()
+    fn sample_input() -> PaperGrid {
+        r#"..@@.@@@@.
+@@@.@.@.@@
+@@@@@.@.@@
+@.@@@@..@.
+@@.@@@@.@@
+.@@@@@@@.@
+.@.@.@.@@@
+@.@@@.@@@@
+.@@@@@@@@.
+@.@.@@@.@."#
+            .parse()
+            .unwrap()
     }
 
     #[test]
     fn part1_sample_input() {
-        let expected = 3;
+        let expected = 13;
         assert_eq!(expected, part1(sample_input()))
     }
 
     #[test]
     fn part2_sample_input() {
-        let expected = 6;
+        let expected = 43;
         assert_eq!(expected, part2(sample_input()))
     }
 }

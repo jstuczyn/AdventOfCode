@@ -278,11 +278,33 @@ pub struct PositionedItem<T> {
     pub item: T,
 }
 
+impl<T> PositionedItem<T> {
+    pub fn as_shared<'a>(this: &'a PositionedItem<&'a mut T>) -> PositionedItem<&'a T> {
+        PositionedItem {
+            position: this.position,
+            item: this.item,
+        }
+    }
+
+    pub fn map<U>(self, f: impl FnOnce(T) -> U) -> PositionedItem<U> {
+        PositionedItem {
+            position: self.position,
+            item: f(self.item),
+        }
+    }
+}
+
 impl<T> Deref for PositionedItem<T> {
     type Target = T;
 
     fn deref(&self) -> &Self::Target {
         &self.item
+    }
+}
+
+impl<T> AsRef<Position> for PositionedItem<T> {
+    fn as_ref(&self) -> &Position {
+        &self.position
     }
 }
 
@@ -311,6 +333,17 @@ impl<T> Grid<T> {
         }
     }
 
+    pub fn iter_mut(&mut self) -> GridIteratorMut<'_, T> {
+        let mut rows = self.rows.iter_mut();
+        let current_row = rows.next().map(|r| r.iter_mut());
+
+        GridIteratorMut {
+            pos: Position::default(),
+            rows,
+            current_row,
+        }
+    }
+
     pub fn get(&self, position: Position) -> Option<&T> {
         let (x, y) = position.as_q1()?;
         self.rows.get(y).and_then(|row| row.get(x))
@@ -319,6 +352,18 @@ impl<T> Grid<T> {
     pub fn get_mut(&mut self, position: Position) -> Option<&mut T> {
         let (x, y) = position.as_q1()?;
         self.rows.get_mut(y).and_then(|row| row.get_mut(x))
+    }
+
+    pub fn adjacent(&self, position: impl AsRef<Position>) -> Vec<PositionedItem<&T>> {
+        position
+            .as_ref()
+            .adjacent()
+            .into_iter()
+            .filter_map(|position| {
+                self.get(position)
+                    .map(|item| PositionedItem { position, item })
+            })
+            .collect()
     }
 }
 
@@ -449,6 +494,35 @@ impl<'a, T> Iterator for GridIterator<'a, T> {
         }
 
         Some(next_item)
+    }
+}
+
+pub struct GridIteratorMut<'a, T> {
+    pos: Position,
+    rows: std::slice::IterMut<'a, Vec<T>>,
+    current_row: Option<std::slice::IterMut<'a, T>>,
+}
+
+impl<'a, T> Iterator for GridIteratorMut<'a, T> {
+    type Item = PositionedItem<&'a mut T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        loop {
+            let row_iter = self.current_row.as_mut()?;
+
+            if let Some(item) = row_iter.next() {
+                let position = self.pos;
+
+                self.pos.x += 1;
+
+                return Some(PositionedItem { position, item });
+            }
+
+            // move to next row
+            self.pos.y += 1;
+            self.pos.x = 0;
+            self.current_row = self.rows.next().map(|r| r.iter_mut());
+        }
     }
 }
 
@@ -609,5 +683,16 @@ mod tests {
         assert_eq!(Position::new(2, 3), iter.next().unwrap().position);
 
         assert!(iter.next().is_none())
+    }
+
+    #[test]
+    fn iter_mut() {
+        let grid1 = dummy_grid();
+        let mut grid2 = grid1.clone();
+
+        for (item1, item2) in grid1.iter().zip(grid2.iter_mut()) {
+            assert_eq!(item1.position, item2.position);
+            assert_eq!(item1.item, item2.item);
+        }
     }
 }

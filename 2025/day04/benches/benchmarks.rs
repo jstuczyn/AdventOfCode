@@ -1,4 +1,4 @@
-// Copyright {{year}} Jedrzej Stuczynski
+// Copyright 2025 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,6 +13,6 @@
 // limitations under the License.
 
 use aoc_common::define_aoc_benchmark;
-use day{{day}}_{{year}}::Day{{day}};
+use day04_2025::Day04;
 
-define_aoc_benchmark!("inputs/{{year}}/day{{day}}", Day{{day}});
+define_aoc_benchmark!("inputs/2025/day04", Day04);
