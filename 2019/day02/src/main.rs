@@ -1,4 +1,4 @@
-// Copyright 2019-2024 Jedrzej Stuczynski
+// Copyright 2019-2026 Jedrzej Stuczynski
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// legacy code
-#![allow(clippy::unwrap_used)]
-#![allow(clippy::expect_used)]
+use aoc_common::helpers::root_path;
+use aoc_solution::AocSolutionSolver;
+use day02_2019::Day02;
 
-use day02_2019::{do_part1, do_part2};
-use std::fs;
-
-fn read_input_file(path: &str) -> Vec<usize> {
-    fs::read_to_string(path)
-        .unwrap()
-        .split(',')
-        .map(|s| s.parse::<usize>().unwrap())
-        .collect()
-}
-
+#[cfg(not(tarpaulin_include))]
 fn main() {
-    let day2_input = read_input_file("inputs/2019/day01");
-    do_part1(day2_input.clone());
-    do_part2(day2_input.clone());
+    Day02::try_solve_from_file(root_path("inputs/2019/day02"))
 }

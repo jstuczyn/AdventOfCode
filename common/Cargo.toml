@@ -13,4 +13,6 @@ readme.workspace = true
 [dependencies]
 anyhow = { workspace = true }
 aoc-solution = { path = "../aoc-solution" }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
 winnow = { workspace = true }
