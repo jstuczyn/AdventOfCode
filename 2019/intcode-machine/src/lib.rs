@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-mod alu;
-mod control_unit;
 mod cpu;
 mod instruction;
 mod intcode;
+mod io;
 mod memory;
-mod registers;
-mod tests;
 
 pub use intcode::IntCodeMachine;
+pub use io::{HardcodedIO, InteractiveIO, NoIO};

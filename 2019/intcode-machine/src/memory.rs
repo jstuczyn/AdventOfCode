@@ -15,21 +15,21 @@
 use anyhow::{Context, bail};
 
 pub trait Memory {
-    fn load(&self, address: usize) -> anyhow::Result<usize>;
+    fn load(&self, address: usize) -> anyhow::Result<isize>;
 
-    fn store(&mut self, address: usize, data: usize) -> anyhow::Result<()>;
+    fn store(&mut self, address: usize, data: isize) -> anyhow::Result<()>;
 
-    fn dump(&self) -> Vec<usize>;
+    fn dump(&self) -> Vec<isize>;
 }
 
-impl Memory for Vec<usize> {
-    fn load(&self, address: usize) -> anyhow::Result<usize> {
+impl Memory for Vec<isize> {
+    fn load(&self, address: usize) -> anyhow::Result<isize> {
         self.get(address)
             .copied()
             .context(format!("Segmentation Fault load from {address}"))
     }
 
-    fn store(&mut self, address: usize, data: usize) -> anyhow::Result<()> {
+    fn store(&mut self, address: usize, data: isize) -> anyhow::Result<()> {
         if self.len() < address {
             bail!("Segmentation Fault store at {address}");
         }
@@ -37,7 +37,27 @@ impl Memory for Vec<usize> {
         Ok(())
     }
 
-    fn dump(&self) -> Vec<usize> {
+    fn dump(&self) -> Vec<isize> {
         self.clone()
+    }
+}
+
+impl<const N: usize> Memory for [isize; N] {
+    fn load(&self, address: usize) -> anyhow::Result<isize> {
+        self.get(address)
+            .copied()
+            .context(format!("Segmentation Fault load from {address}"))
+    }
+
+    fn store(&mut self, address: usize, data: isize) -> anyhow::Result<()> {
+        if self.len() < address {
+            bail!("Segmentation Fault store at {address}");
+        }
+        self[address] = data;
+        Ok(())
+    }
+
+    fn dump(&self) -> Vec<isize> {
+        self.to_vec()
     }
 }

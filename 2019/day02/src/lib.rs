@@ -14,37 +14,45 @@
 
 use aoc_common::parsing::CommaSeparatedParser;
 use aoc_solution::Aoc;
-use intcode_machine::IntCodeMachine;
+use intcode_machine::{IntCodeMachine, NoIO};
 
 #[derive(Aoc)]
-#[aoc(input = Vec<usize>)]
+#[aoc(input = Vec<isize>)]
 #[aoc(parser = CommaSeparatedParser)]
-#[aoc(part1(output = usize, runner = part1))]
-#[aoc(part2(output = usize, runner = part2))]
+#[aoc(part1(output = isize, runner = part1))]
+#[aoc(part2(output = isize, runner = part2))]
 pub struct Day02;
 
-pub fn part1(mut memory: Vec<usize>) -> usize {
+pub fn part1(mut memory: Vec<isize>) -> isize {
     memory[1] = 12;
     memory[2] = 2;
-    let mut intcode_machine = IntCodeMachine::load(memory);
-    if intcode_machine.run().is_err() {
+    let mut intcode_machine = IntCodeMachine::load(memory, NoIO);
+    if intcode_machine
+        .run()
+        .inspect_err(|err| eprintln!("intcode execution failure: {err}"))
+        .is_err()
+    {
         return 0;
     }
 
-    intcode_machine.output()
+    intcode_machine.memory_output()
 }
 
-pub fn part2(memory: Vec<usize>) -> usize {
+pub fn part2(memory: Vec<isize>) -> isize {
     for noun in 0..=99 {
         for verb in 0..=99 {
             let mut memory = memory.clone();
             memory[1] = noun;
             memory[2] = verb;
-            let mut intcode_machine = IntCodeMachine::load(memory);
-            if intcode_machine.run().is_err() {
+            let mut intcode_machine = IntCodeMachine::load(memory, NoIO);
+            if intcode_machine
+                .run()
+                .inspect_err(|err| eprintln!("intcode execution failure: {err}"))
+                .is_err()
+            {
                 return 0;
             }
-            if intcode_machine.output() == 19690720 {
+            if intcode_machine.memory_output() == 19690720 {
                 return 100 * noun + verb;
             }
         }
@@ -63,42 +71,43 @@ mod tests {
 
         #[test]
         fn produces_expected_output_for_tiny_input_with_opcode1() -> anyhow::Result<()> {
-            let mut intcode = IntCodeMachine::load(vec![1, 0, 0, 0, 99]);
+            let mut intcode = IntCodeMachine::load(vec![1, 0, 0, 0, 99], NoIO);
             intcode.run()?;
-            assert_eq!(2, intcode.output());
+            assert_eq!(2, intcode.memory_output());
             Ok(())
         }
 
         #[test]
         fn produces_expected_output_for_tiny_input_with_opcode2() -> anyhow::Result<()> {
-            let mut intcode = IntCodeMachine::load(vec![2, 3, 0, 3, 99]);
+            let mut intcode = IntCodeMachine::load(vec![2, 3, 0, 3, 99], NoIO);
             intcode.run()?;
-            assert_eq!(2, intcode.output());
+            assert_eq!(2, intcode.memory_output());
             Ok(())
         }
 
         #[test]
         fn produces_expected_output_for_average_size_input() -> anyhow::Result<()> {
-            let mut intcode = IntCodeMachine::load(vec![2, 4, 4, 5, 99, 0]);
+            let mut intcode = IntCodeMachine::load(vec![2, 4, 4, 5, 99, 0], NoIO);
             intcode.run()?;
-            assert_eq!(2, intcode.output());
+            assert_eq!(2, intcode.memory_output());
             Ok(())
         }
 
         #[test]
         fn produces_expected_output_for_longer_input() -> anyhow::Result<()> {
-            let mut intcode = IntCodeMachine::load(vec![1, 1, 1, 4, 99, 5, 6, 0, 99]);
+            let mut intcode = IntCodeMachine::load(vec![1, 1, 1, 4, 99, 5, 6, 0, 99], NoIO);
             intcode.run()?;
 
-            assert_eq!(30, intcode.output());
+            assert_eq!(30, intcode.memory_output());
             Ok(())
         }
 
         #[test]
         fn produces_expected_output_for_a_lengthy_input() -> anyhow::Result<()> {
-            let mut intcode = IntCodeMachine::load(vec![1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50]);
+            let mut intcode =
+                IntCodeMachine::load(vec![1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50], NoIO);
             intcode.run()?;
-            assert_eq!(3500, intcode.output());
+            assert_eq!(3500, intcode.memory_output());
             Ok(())
         }
     }

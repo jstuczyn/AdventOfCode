@@ -19,6 +19,14 @@ itertools = { workspace = true }
 aoc-solution = { path = "../../aoc-solution" }
 aoc-common = { path = "../../common" }
 anyhow = { workspace = true }
+intcode-machine = { path = "../intcode-machine" }
+
+[dev-dependencies]
+criterion = { workspace = true }
+
+[[bench]]
+name = "benchmarks"
+harness = false
 
 [lints]
 workspace = true

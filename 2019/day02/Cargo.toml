@@ -20,7 +20,6 @@ aoc-common = { path = "../../common" }
 anyhow = { workspace = true }
 intcode-machine = { path = "../intcode-machine" }
 
-
 [dev-dependencies]
 criterion = { workspace = true }
 

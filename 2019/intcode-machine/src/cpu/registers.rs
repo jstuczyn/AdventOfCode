@@ -33,11 +33,7 @@ pub(crate) struct Registers {
     pub(crate) mar: usize,
 
     /// Memory Data Register
-    pub(crate) mdr: usize,
-
-    /// Accumulator Register
-    /// Result of ALU operations
-    pub(crate) acc: usize,
+    pub(crate) mdr: isize,
     // /// Destination Register
     // pub(crate) dest: usize,
     // /// General Purpose Registers
@@ -48,7 +44,7 @@ pub(crate) struct Registers {
 #[derive(Debug, Default)]
 pub struct InstructionRegister {
     op_code: usize,
-    operands: Vec<usize>,
+    operands: Vec<isize>,
 }
 
 impl InstructionRegister {
@@ -64,7 +60,7 @@ impl InstructionRegister {
         raw_op_code_operands(self.op_code)
     }
 
-    pub(crate) fn push_operand(&mut self, operand: usize) {
+    pub(crate) fn push_operand(&mut self, operand: isize) {
         self.operands.push(operand);
     }
 
@@ -77,9 +73,13 @@ impl InstructionRegister {
         1 + self.operands.len()
     }
 
-    pub(crate) fn operands(&self, count: usize) -> anyhow::Result<Vec<usize>> {
+    pub(crate) fn raw_operands(&self, count: usize) -> anyhow::Result<Vec<isize>> {
         if self.operands.len() < count {
-            bail!("insufficient number of operands in instruction register");
+            bail!(
+                "insufficient number of operands in instruction register. want: {count}, got: {}. opcode: {}",
+                self.operands.len(),
+                self.op_code
+            );
         }
         Ok(self.operands[..count].to_vec())
     }
@@ -91,7 +91,5 @@ impl Registers {
         trace!("IR: {:#?}", self.ir);
         trace!("MAR: {}", self.mar);
         trace!("MDR: {}", self.mdr);
-        trace!("ACC: {}", self.acc);
-        // trace!("DST: {}", self.dest);
     }
 }

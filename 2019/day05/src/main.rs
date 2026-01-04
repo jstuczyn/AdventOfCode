@@ -12,21 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// legacy code
-#![allow(clippy::unwrap_used)]
-#![allow(clippy::expect_used)]
+use aoc_common::helpers::root_path;
+use aoc_solution::AocSolutionSolver;
+use day05_2019::Day05;
 
-use day05_2019::utils::read_input_file;
-use day05_2019::{IntcodeMachine, Tape};
-
-fn run_machine(tape: Tape) {
-    // answer will be printed (as per specs) to output (here STDOUT)
-    // part1 requires input of 1, part2 of 5
-    println!("When asked for input, provide '1' when executing part1 and '5' when executing part2");
-    IntcodeMachine::new(tape).run().unwrap();
-}
-
+#[cfg(not(tarpaulin_include))]
 fn main() {
-    let tape = Tape::new(read_input_file("inputs/2019/day05"));
-    run_machine(tape);
+    Day05::try_solve_from_file(root_path("inputs/2019/day05"))
 }
